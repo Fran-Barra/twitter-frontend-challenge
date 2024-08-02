@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logo from "../../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import LabeledInput from "../../../components/labeled-input/LabeledInput";
 import Button from "../../../components/button/Button";
 import { ButtonType } from "../../../components/button/StyledButton";
 import { StyledH3 } from "../../../components/common/text";
+import { SingInData } from "../../../service";
 
 const SignInPage = () => {
   const [email, setEmail] = useState("");
@@ -19,8 +20,12 @@ const SignInPage = () => {
   const { t } = useTranslation();
 
   const handleSubmit = () => {
+    const credentials : SingInData = email.includes('@') ? 
+      {email: email, password: password} : 
+      {username: email, password: password} 
+    
     httpRequestService
-      .signIn({ email, password })
+      .signIn(credentials)
       .then(() => navigate("/"))
       .catch(() => setError(true));
   };
