@@ -1,5 +1,4 @@
-import React from "react";
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { StyledSideBarPageWrapper } from "../../pages/side-bar-page/SideBarPageWrapper";
 import NavBar from "../navbar/NavBar";
 import SignUpPage from "../../pages/auth/sign-up/SignUpPage";
@@ -10,6 +9,7 @@ import ProfilePage from "../../pages/profile/ProfilePage";
 import TweetPage from "../../pages/create-tweet-page/TweetPage";
 import CommentPage from "../../pages/create-comment-page/CommentPage";
 import PostPage from "../../pages/post-page/PostPage";
+import isAuthenticated from "../../service/isAuthenticated";
 
 const WithNav = () => {
   return (
@@ -19,6 +19,15 @@ const WithNav = () => {
     </StyledSideBarPageWrapper>
   );
 };
+
+const ProtectedRoute = ({ isAuthenticated } : { isAuthenticated : ()=>boolean }) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/sign-in" replace />
+  }
+
+  return <WithNav />
+}
+
 
 export const ROUTER = createBrowserRouter([
   {
@@ -30,7 +39,7 @@ export const ROUTER = createBrowserRouter([
     element: <SignInPage />,
   },
   {
-    element: <WithNav />,
+    element: <ProtectedRoute isAuthenticated={isAuthenticated}/>,
     children: [
       {
         path: "/",
