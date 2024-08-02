@@ -7,7 +7,8 @@ const url =
 
 const httpRequestService = {
   signUp: async (data: Partial<SingUpData>) => {
-    const res = await axios.post(`${url}/auth/signup`, data);
+    //TODO: manage bad request, specially password is not strong enough
+    const res = await axios.post(`${url}/auth/signup`, {...data, privateUser: true});
     if (res.status === 201) {
       localStorage.setItem("token", `Bearer ${res.data.token}`);
       return true;
