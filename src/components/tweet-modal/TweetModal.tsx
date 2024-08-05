@@ -11,7 +11,7 @@ export const TweetModal = ({ open, onClose }: TweetModalProps) => {
   return (
     <>
       <PostModal show={open} onClose={onClose}>
-        <TweetBox borderless close={onClose} />
+        <TweetBox close={onClose} />
       </PostModal>
     </>
   );

@@ -1,4 +1,4 @@
-import type { PostData, SingInData, SingUpData } from "./index";
+import type { PostData, SingInData, SingUpData, User } from "./index";
 import axios from "axios";
 import { S3Service } from "./S3Service";
 
