@@ -65,6 +65,7 @@ const ProfilePage = () => {
     getProfileData().then();
   }, [id]);
 
+  //TODO: this is strange, ask why
   if (!id) return null;
 
   const handleButtonAction = async () => {
