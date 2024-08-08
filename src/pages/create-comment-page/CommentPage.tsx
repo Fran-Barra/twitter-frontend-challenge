@@ -15,25 +15,22 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { StyledContainer } from "../../components/common/Container";
 import { StyledLine } from "../../components/common/Line";
 import { StyledP } from "../../components/common/text";
+import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 const CommentPage = () => {
   const [content, setContent] = useState("");
   const [post, setPost] = useState<Post | undefined>(undefined);
   const [images, setImages] = useState<File[]>([]);
-  const [user, setUser] = useState<User>()
   const postId = useLocation().pathname.split("/")[3];
   const service = useHttpRequestService();
+  const reactQueryService = useReactQueryProxy();
   const { length, query } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
+  //TODO: manage error and loading
+  const {data: user, isLoading, error} = reactQueryService.useMe();
 
-  const handleGetUser = async () => {
-    return await service.me()
-  }
 
   useEffect(() => {
     window.innerWidth > 600 && exit();

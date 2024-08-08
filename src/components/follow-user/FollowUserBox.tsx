@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import Button from "../button/Button";
-import {useHttpRequestService} from "../../service/HttpRequestService";
 import UserDataBox from "../user-data-box/UserDataBox";
 import {useTranslation} from "react-i18next";
 import {ButtonType} from "../button/StyledButton";
 import "./FollowUserBox.css";
 import {Author, User} from "../../service";
+import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 interface FollowUserBoxProps {
   profilePicture?: string;
@@ -21,30 +21,46 @@ const FollowUserBox = ({
                          id,
                        }: FollowUserBoxProps) => {
   const {t} = useTranslation();
-  const service = useHttpRequestService()
-  const [user, setUser] = useState<User>()
+  const service = useReactQueryProxy()
 
 
+  //TODO: handle loading and error
+  const {data: user, isLoading, error} = service.useMe()
   useEffect(() => {
-    handleGetUser().then(r => {
-      setUser(r)
-      setIsFollowing(r?.following.some((f: Author) => f.id === id))
-    })
-  }, []);
+      if (!user) {
+        console.log("failed to get me");
+        return
+      }
+      setIsFollowing(user?.following.some((f: Author) => f.id === id))
+  }, [user]);
 
-  const handleGetUser = async () => {
-    return await service.me()
-  }
 
   const [isFollowing, setIsFollowing] = useState(false);
 
-  const handleFollow = async () => {
-    if (isFollowing) {
-      await service.unfollowUser(id);
-    } else {
-      await service.followUser(id);
+  const followMutation = service.useFollowUser({
+    data: {userId: id},
+    onSuccess: ()=>setIsFollowing(true),
+    onError: (error)=>{
+      //TODO: manage error
+      console.error(error);
     }
-    setIsFollowing(!isFollowing);
+  })
+  
+  const unfollowMutation = service.useUnfollowUser({
+    data: {userId: id},
+    onSuccess: ()=>setIsFollowing(false),
+    onError: (error) => {
+      //TODO: manage error
+      console.error(error);
+    }
+  })
+
+  const handleFollow = () => {
+    if (isFollowing) {
+        unfollowMutation.mutate();
+    } else {
+        followMutation.mutate();
+    }
   };
 
   return (

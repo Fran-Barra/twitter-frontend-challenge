@@ -7,8 +7,7 @@ import React, {useEffect, useState} from "react";
 import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
-import {useHttpRequestService} from "../../service/HttpRequestService";
-import {User} from "../../service";
+import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 
 interface ProfileLogoutPromptProps {
@@ -18,17 +17,11 @@ interface ProfileLogoutPromptProps {
 
 const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
     const [logoutOpen, setLogoutOpen] = useState(false);
-    const service = useHttpRequestService()
-    const [user, setUser] = useState<User>()
+    const service = useReactQueryProxy()
 
 
-    useEffect(() => {
-        handleGetUser().then(r => setUser(r))
-    }, []);
-
-    const handleGetUser = async () => {
-        return await service.me()
-    }
+  //TODO: manage error and is loading
+  const {data: user, isLoading, error} = service.useMe()
 
 
     const handleLogout = () => {

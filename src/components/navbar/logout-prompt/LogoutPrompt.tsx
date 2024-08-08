@@ -9,8 +9,8 @@ import {ButtonType} from "../../button/StyledButton";
 import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
-import {useHttpRequestService} from "../../../service/HttpRequestService";
 import {User} from "../../../service";
+import useReactQueryProxy from "../../../service/reactQueryRequestProxy";
 
 interface LogoutPromptProps {
   show: boolean;
@@ -21,17 +21,10 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const service = useHttpRequestService()
-  const [user, setUser] = useState<User>()
+  const service = useReactQueryProxy();
 
-
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await service.me()
-  }
+  //TODO: manage error and loading
+  const {data: user, isLoading, error} = service.useMe()
 
   const handleClick = () => {
     setShowModal(true);
@@ -55,6 +48,10 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
     setShowPrompt(show);
   }, [show]);
 
+
+  //TODO: warning: You provided a `checked` prop to a form field without an `onChange` handler. 
+  //This will render a read-only field. If the field should be mutable use `defaultChecked`. 
+  //Otherwise, set either `onChange` or `readOnly`.
   return (
     <>
       {showPrompt && (

@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { User } from "../../service";
 import { StyledButtonContainer } from "./ButtonContainer";
+import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 interface TweetBoxProps {
     parentId?: string
@@ -31,17 +32,11 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     const httpService = useHttpRequestService();
     const dispatch = useDispatch();
     const {t} = useTranslation();
-    const service = useHttpRequestService()
-    const [user, setUser] = useState<User>()
+    const service = useReactQueryProxy()
 
 
-    useEffect(() => {
-        handleGetUser().then(r => setUser(r))
-    }, []);
-
-    const handleGetUser = async () => {
-        return await service.me()
-    }
+    //TODO: manage error and loading
+    const {data: user, isLoading, error} = service.useMe()
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContent(e.target.value);

@@ -3,9 +3,15 @@ import server from "./axiosServer";
 import type { PostData, SingInData, SingUpData, User } from "./index";
 import { S3Service } from "./S3Service";
 
+interface HttpRequestService {
+  me: () => Promise<User | undefined>
+  followUser: (userId: string) => Promise<any | undefined>
+  unfollowUser: (userId: string) => Promise<any | undefined>
 
+  [key: string]: (...args: any[]) => Promise<any | undefined>;
+}
 
-const httpRequestService = {
+const httpRequestService : HttpRequestService = {
   signUp: async (data: Partial<SingUpData>) => {
     //TODO: manage bad request, specially password is not strong enough
     const res = await server.post(`/auth/signup`, {...data, privateUser: true});
@@ -44,6 +50,7 @@ const httpRequestService = {
     }
   },
 
+  //TODO: type query and use axios params
   getPosts: async (query: string) => {
     const res = await server.get(`/post/${query}`);
     if (res.status === 200) {
@@ -64,6 +71,8 @@ const httpRequestService = {
   },
 
   me: async () => {
+    console.log("Requested with axios");
+    
     const res = await server.get(`/user/me`);
     if (res.status === 200) {
       return res.data;

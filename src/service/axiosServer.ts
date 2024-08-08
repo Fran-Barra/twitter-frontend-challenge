@@ -15,4 +15,16 @@ server.interceptors.request.use(
     }
 )
 
+server.interceptors.response.use(
+    null,
+    err => {
+        console.error(err)
+        if (!axios.isAxiosError(err)) return
+        if (err.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = '/sign-in'
+        }
+    }
+)
+
 export default server

@@ -10,6 +10,7 @@ import Button from "../../components/button/Button";
 import ProfileFeed from "../../components/feed/ProfileFeed";
 import {StyledContainer} from "../../components/common/Container";
 import {StyledH5} from "../../components/common/text";
+import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState<User | null>(null);
@@ -22,21 +23,15 @@ const ProfilePage = () => {
     buttonText: "",
   });
   const service = useHttpRequestService()
-  const [user, setUser] = useState<User>()
+  const reactQueryService = useReactQueryProxy()
 
   const id = useParams().id;
   const navigate = useNavigate();
 
   const {t} = useTranslation();
 
-
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await service.me()
-  }
+  //TODO: manage error
+  const {data: user, isLoading, error} = reactQueryService.useMe()
 
   const handleButtonType = (): { component: ButtonType; text: string } => {
     if (profile?.id === user?.id)
@@ -46,6 +41,16 @@ const ProfilePage = () => {
     else return {component: ButtonType.FOLLOW, text: t("buttons.follow")};
   };
 
+  const unfollowMutation = reactQueryService.useUnfollowUser({
+    data: {userId: profile!.id},
+    onSuccess: () => {
+      setFollowing(false);
+      setShowModal(false);
+      //this had an await, but I don't understand the purpose of an await on a callback
+      getProfileData()
+    }
+  })
+
   const handleSubmit = () => {
     if (profile?.id === user?.id) {
       service.deleteProfile().then(() => {
@@ -53,11 +58,7 @@ const ProfilePage = () => {
         navigate("/sign-in");
       });
     } else {
-      service.unfollowUser(profile!.id).then(async () => {
-        setFollowing(false);
-        setShowModal(false);
-        await getProfileData();
-      });
+      unfollowMutation.mutate()
     }
   };
 
@@ -67,6 +68,13 @@ const ProfilePage = () => {
 
   //TODO: this is strange, ask why
   if (!id) return null;
+
+  const followMutation = reactQueryService.useFollowUser({
+    data: {userId: id},
+    onSuccess: () => {
+      service.getProfile(id).then((res) => setProfile(res));
+    }
+  })
 
   const handleButtonAction = async () => {
     if (profile?.id === user?.id) {
@@ -87,8 +95,7 @@ const ProfilePage = () => {
           buttonText: t("buttons.unfollow"),
         });
       } else {
-        await service.followUser(id);
-        service.getProfile(id).then((res) => setProfile(res));
+        followMutation.mutate()
       }
       return await getProfileData();
     }

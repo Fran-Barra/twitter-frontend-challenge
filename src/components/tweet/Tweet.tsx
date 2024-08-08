@@ -12,6 +12,7 @@ import DeletePostModal from "./delete-post-modal/DeletePostModal";
 import ImageContainer from "./tweet-image/ImageContainer";
 import CommentModal from "../comment/comment-modal/CommentModal";
 import {useNavigate} from "react-router-dom";
+import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 interface TweetProps {
   post: Post;
@@ -22,16 +23,11 @@ const Tweet = ({post}: TweetProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
   const service = useHttpRequestService();
+  const reactQueryService = useReactQueryProxy();
   const navigate = useNavigate();
-  const [user, setUser] = useState<User>()
 
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await service.me()
-  }
+  //TODO: manage error and loading
+  const {data: user, isLoading, error} = reactQueryService.useMe()
 
   const getCountByType = (type: string): number => {
     return actualPost?.reactions?.filter((r) => r.type === type).length ?? 0;
