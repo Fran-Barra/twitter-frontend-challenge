@@ -13,13 +13,14 @@ interface HttpRequestService {
 
 const httpRequestService : HttpRequestService = {
   signUp: async (data: Partial<SingUpData>) => {
-    //TODO: manage bad request, specially password is not strong enough
     const res = await server.post(`/auth/signup`, {...data, privateUser: true});
+
     if (res.status === 201) {
       localStorage.setItem("token", `Bearer ${res.data.token}`);
       return true;
     }
   },
+
   signIn: async (data: SingInData) => {
     const res = await server.post(`/auth/login`, data);
     if (res.status === 200) {

@@ -9,6 +9,7 @@ import LabeledInput from "../../../components/labeled-input/LabeledInput";
 import Button from "../../../components/button/Button";
 import { ButtonType } from "../../../components/button/StyledButton";
 import { StyledH3 } from "../../../components/common/text";
+import axios, { HttpStatusCode } from "axios";
 
 interface SignUpData {
   name: string;
@@ -19,7 +20,7 @@ interface SignUpData {
 }
 const SignUpPage = () => {
   const [data, setData] = useState<Partial<SignUpData>>({});
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<{error: boolean, code?: number}>({error: false});
 
   const httpRequestService = useHttpRequestService();
   const navigate = useNavigate();
@@ -34,8 +35,19 @@ const SignUpPage = () => {
     httpRequestService
       .signUp(requestData)
       .then(() => navigate("/"))
-      .catch(() => setError(false));
+      .catch((e) => {
+        if (axios.isAxiosError(e)) setError({error: true, code: e.status || e.response?.status})
+        else setError({error: true})
+      });
   };
+
+  const errorToShow : ()=>string = () => {
+    console.log(error);
+    
+    if (error.code === HttpStatusCode.BadRequest) return t('error.sign-up.password')
+    if (error.code === HttpStatusCode.Conflict) return t('error.sign-up.user-exists')
+    return t('error.unexpected')
+  }
 
   return (
     <AuthWrapper>
@@ -50,21 +62,21 @@ const SignUpPage = () => {
               required
               placeholder={"Enter name..."}
               title={t("input-params.name")}
-              error={error}
+              error={error.error}
               onChange={handleChange("name")}
             />
             <LabeledInput
               required
               placeholder={"Enter username..."}
               title={t("input-params.username")}
-              error={error}
+              error={error.error}
               onChange={handleChange("username")}
             />
             <LabeledInput
               required
               placeholder={"Enter email..."}
               title={t("input-params.email")}
-              error={error}
+              error={error.error}
               onChange={handleChange("email")}
             />
             <LabeledInput
@@ -72,7 +84,7 @@ const SignUpPage = () => {
               required
               placeholder={"Enter password..."}
               title={t("input-params.password")}
-              error={error}
+              error={error.error}
               onChange={handleChange("password")}
             />
             <LabeledInput
@@ -80,9 +92,10 @@ const SignUpPage = () => {
               required
               placeholder={"Confirm password..."}
               title={t("input-params.confirm-password")}
-              error={error}
+              error={error.error}
               onChange={handleChange("confirmPassword")}
             />
+            <p className={"error-message"}>{error.error && errorToShow()}</p>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <Button
