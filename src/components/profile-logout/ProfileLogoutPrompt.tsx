@@ -44,7 +44,7 @@ const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
             cursor={'pointer'}
         >
             <StyledProfileLogoutPromptContainer direction={direction}>
-                <img src={user?.profilePicture ?? icon} className="icon" alt="Icon"/>
+                <img src={user?.profilePicture ?? icon} className="icon" alt="Icon" onError={(e)=>e.currentTarget.src = icon}/>
                 {logoutOpen &&
                     <StyledLogoutPrompt margin={margin} onClick={(event) => handleButtonClick(event)}>
                         <LogoutPrompt show={logoutOpen}/>
