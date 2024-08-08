@@ -15,7 +15,8 @@ const useReactQueryProxy = () => {
     return {
         useMe: () => useQuery({
             queryKey: ['me'],
-            queryFn: httpService.me
+            queryFn: httpService.me,
+            staleTime: Infinity
         }),
 
         useFollowUser: (options: MutationOptions<{userId: string}>) => useMutation({
