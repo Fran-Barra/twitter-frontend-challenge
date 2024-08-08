@@ -17,13 +17,16 @@ server.interceptors.request.use(
 
 server.interceptors.response.use(
     null,
-    err => {
+    err => {        
         console.error(err)
-        if (!axios.isAxiosError(err)) return
-        if (err.status === 401) {
-            localStorage.removeItem("token");
-            window.location.href = '/sign-in'
-        }
+        if (axios.isAxiosError(err)) {
+            if (err.status === 401) {
+                localStorage.removeItem("token");
+                window.location.href = '/sign-in'
+                return
+            }     
+        }   
+        return Promise.reject(err)
     }
 )
 
