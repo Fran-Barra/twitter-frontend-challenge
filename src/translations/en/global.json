@@ -33,7 +33,12 @@
     "comment" : "Tweet your reply"
   },
   "error": {
-    "login": "Sorry, your username or password was incorrect. Please try again."
+    "unexpected": "Sorry, something went wrong. Please try again",
+    "login": "Sorry, your username or password was incorrect. Please try again.",
+    "sign-up": {
+      "password": "Password is not strong enough",
+      "user-exists": "User with that username or email already exists"
+    }
   },
   "input-params": {
     "username": "Username",

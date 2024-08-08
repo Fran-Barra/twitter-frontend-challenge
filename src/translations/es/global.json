@@ -35,7 +35,12 @@
     "comment": "Escribe tu respuesta"
   },
   "error": {
-    "login": "Lo siento, tu nombre de usuario o contraseña es incorrecto. Por favor, inténtalo de nuevo."
+    "unexpected": "Lo siento, algo salio mal. Por favor intentalo de nuevo",
+    "login": "Lo siento, tu nombre de usuario o contraseña es incorrecto. Por favor, inténtalo de nuevo.",
+    "sign-up": {
+      "password": "La contraseña no es lo suficientemente fuerte",
+      "user-exists": "Un usuario con ese nombre o mail ya existe"
+    }
   },
   "input-params": {
     "username": "Nombre de usuario",
