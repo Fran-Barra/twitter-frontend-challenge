@@ -9,7 +9,6 @@ import {ButtonType} from "../../button/StyledButton";
 import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
-import {User} from "../../../service";
 import useReactQueryProxy from "../../../service/reactQueryRequestProxy";
 
 interface LogoutPromptProps {
