@@ -8,6 +8,7 @@ import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
 import useReactQueryProxy from "../../service/reactQueryRequestProxy";
+import HideOnClickOutside from "../common/HideOnClickOutside";
 
 
 interface ProfileLogoutPromptProps {
@@ -45,11 +46,14 @@ const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
         >
             <StyledProfileLogoutPromptContainer direction={direction}>
                 <img src={user?.profilePicture ?? icon} className="icon" alt="Icon" onError={(e)=>e.currentTarget.src = icon}/>
-                {logoutOpen &&
-                    <StyledLogoutPrompt margin={margin} onClick={(event) => handleButtonClick(event)}>
-                        <LogoutPrompt show={logoutOpen}/>
-                    </StyledLogoutPrompt>
-                }
+                <HideOnClickOutside 
+                    Wrapper={StyledLogoutPrompt} 
+                    wrapperProps={{margin: margin, onClick: (event: React.MouseEvent<Element, MouseEvent>) => handleButtonClick(event)}}
+                    isOpen={logoutOpen} 
+                    onClose={handleLogout}
+                >
+                    <LogoutPrompt show={logoutOpen}/>
+                </HideOnClickOutside>
             </StyledProfileLogoutPromptContainer>
             <StyledContainer padding={"4px 0"} gap={"4px"} className={'user-info'}>
                 <StyledP primary>{user?.name}</StyledP>
