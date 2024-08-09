@@ -5,6 +5,7 @@ import { ButtonType } from "../button/StyledButton";
 import { StyledModalContainer } from "./ModalContainer";
 import { StyledContainer } from "../common/Container";
 import { StyledH5, StyledP } from "../common/text";
+import HideOnClickOutside from "../common/HideOnClickOutside";
 
 interface ModalProps {
   show: boolean;
@@ -27,7 +28,11 @@ const Modal = ({
     <>
       {show && (
         <StyledBlurredBackground>
-          <StyledModalContainer>
+          <HideOnClickOutside 
+            Wrapper={StyledModalContainer}
+            isOpen={show}
+            onClose={onClose}
+          >
             <StyledContainer alignItems={"center"} justifyContent={"center"}>
               {img && (
                 <img src={img} alt={"modal"} width={"32px"} height={"26px"} />
@@ -53,7 +58,7 @@ const Modal = ({
                 </StyledContainer>
               </StyledContainer>
             </StyledContainer>
-          </StyledModalContainer>
+          </HideOnClickOutside>
         </StyledBlurredBackground>
       )}
     </>
