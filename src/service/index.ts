@@ -45,6 +45,7 @@ export interface Author {
   profilePicture?: string;
   private: boolean;
   createdAt: Date;
+  follows: boolean;
 }
 
 export interface User {
@@ -54,8 +55,8 @@ export interface User {
   profilePicture?: string;
   private: boolean;
   createdAt: Date;
-  followers: Author[];
-  following: Author[];
+  follows: boolean;
+  followsBack: boolean;
   posts: Post[];
 }
 
