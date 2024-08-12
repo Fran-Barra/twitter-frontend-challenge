@@ -36,6 +36,7 @@ const SuggestionBox = () => {
               name={user.name}
               username={user.username}
               profilePicture={user.profilePicture}
+              follows={user.follows}
             />
           ))
       ) : (

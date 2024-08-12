@@ -12,6 +12,7 @@ interface FollowUserBoxProps {
   name?: string;
   username?: string;
   id: string;
+  follows: boolean;
 }
 
 const FollowUserBox = ({
@@ -19,6 +20,7 @@ const FollowUserBox = ({
                          name,
                          username,
                          id,
+                         follows
                        }: FollowUserBoxProps) => {
   const {t} = useTranslation();
   const service = useReactQueryProxy()
@@ -31,7 +33,7 @@ const FollowUserBox = ({
         console.log("failed to get me");
         return
       }
-      setIsFollowing(user?.following.some((f: Author) => f.id === id))
+      setIsFollowing(follows)
   }, [user]);
 
 
