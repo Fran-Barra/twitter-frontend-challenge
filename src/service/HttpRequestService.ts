@@ -7,6 +7,7 @@ interface HttpRequestService {
   me: () => Promise<User | undefined>
   followUser: (userId: string) => Promise<any | undefined>
   unfollowUser: (userId: string) => Promise<any | undefined>
+  getProfile: (userId : string) => Promise<User>
 
   [key: string]: (...args: any[]) => Promise<any | undefined>;
 }
@@ -141,7 +142,7 @@ const httpRequestService : HttpRequestService = {
   },
 
   getProfile: async (id: string) => {
-    const res = await server.get(`/user/profile/${id}`);
+    const res = await server.get(`/user/${id}`);
     if (res.status === 200) {
       return res.data;
     }
