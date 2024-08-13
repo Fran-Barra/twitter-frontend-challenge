@@ -34,7 +34,6 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     const {t} = useTranslation();
     const service = useReactQueryProxy()
 
-
     //TODO: manage error and loading
     const {data: user, isLoading, error} = service.useMe()
 
@@ -43,6 +42,7 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     };
     const handleSubmit = async () => {
         try {
+            httpService.createPost({content: content, parentId: parentId, images: images})
             setContent("");
             setImages([]);
             setImagesPreview([]);
