@@ -30,7 +30,12 @@ const httpRequestService : HttpRequestService = {
     }
   },
   createPost: async (data: PostData) => {
-    const res = await server.post(`/post`, data);
+    const body = {content: data.content, images: data.images}
+    
+    const res = data.parentId ? 
+      await server.post(`/post/comment/${data.parentId}`, body) :
+      await server.post(`/post`, body) 
+      
     if (res.status === 201) {
       const { upload } = S3Service;
       for (const imageUrl of res.data.images) {
