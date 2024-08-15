@@ -1,13 +1,18 @@
 import axios from "axios";
 import server from "./axiosServer";
-import type { PostData, SingInData, SingUpData, User } from "./index";
+import type { Post, PostData, SingInData, SingUpData, User } from "./index";
 import { S3Service } from "./S3Service";
+import { ReactionType } from "../util/ReactionType";
 
 interface HttpRequestService {
   me: () => Promise<User | undefined>
   followUser: (userId: string) => Promise<any | undefined>
   unfollowUser: (userId: string) => Promise<any | undefined>
   getProfile: (userId : string) => Promise<User>
+
+  getPostById: (postId : string) => Promise<Post>
+  createReaction: (postId : string, reactionType: ReactionType) => Promise<void>
+  deleteReaction: (postId : string, reactionType: ReactionType) => Promise<void>
 
   [key: string]: (...args: any[]) => Promise<any | undefined>;
 }
@@ -93,18 +98,21 @@ const httpRequestService : HttpRequestService = {
     }
   },
 
-  createReaction: async (postId: string, reaction: string) => {
+  createReaction: async (postId: string, reaction: ReactionType) => {
     const res = await server.post(
-      `/reaction/${postId}`,
-      { type: reaction }
+      `/reaction/${postId}`, null,
+      { params: {reactionType: reaction} }
     );
     if (res.status === 201) {
       return res.data;
     }
   },
 
-  deleteReaction: async (reactionId: string) => {
-    const res = await server.delete(`/reaction/${reactionId}`);
+  deleteReaction: async (postId: string, reaction: ReactionType) => {
+    const res = await server.delete(
+      `/reaction/${postId}`,
+      {params: { reactionType: reaction}}
+    );
     if (res.status === 200) {
       return res.data;
     }
