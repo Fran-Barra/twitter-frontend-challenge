@@ -136,10 +136,9 @@ const httpRequestService : HttpRequestService = {
     try {
       //TODO: deprecated, should not be used
       const cancelToken = axios.CancelToken.source();
-
-      const response = await server.get(`/user/search`, {
+      if (!username) return []
+      const response = await server.get(`/user/by_username/${username}`, {
         params: {
-          username,
           limit,
           skip,
         },
