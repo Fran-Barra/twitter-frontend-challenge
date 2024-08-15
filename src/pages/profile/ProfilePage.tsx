@@ -162,7 +162,7 @@ const ProfilePage = () => {
                   </StyledContainer>
                 </StyledContainer>
                 <StyledContainer width={"100%"}>
-                  {profile.follows || profile.id === user.id ? (
+                  {!profile.private || profile.follows || profile.id === user.id ? (
                       <ProfileFeed/>
                   ) : (
                       <StyledH5>Private account</StyledH5>
