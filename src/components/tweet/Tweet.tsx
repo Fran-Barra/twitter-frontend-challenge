@@ -41,8 +41,8 @@ const Tweet = ({post}: TweetProps) => {
     }
   };
 
-  const hasReactedByType = (type: ReactionType): boolean => {
-    if (!actualPost) return false
+  const hasReactedByType = (type: ReactionType): boolean => {    
+    if (!actualPost) return (type === ReactionType.LIKE ? post.likedByUser : post.retweetedByUser) || false
     return (type === ReactionType.LIKE ? actualPost.likedByUser : actualPost.retweetedByUser) || false
   };
 

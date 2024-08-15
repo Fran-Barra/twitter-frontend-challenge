@@ -49,6 +49,7 @@ const useReactQueryProxy = () => {
         }),
 
 
+        //TODO: check that is working correctly. (create reaction and delete reaction call the get, but I think the stash is not working)
         useGetPostById: (postId: string) => useQuery({
             queryKey: ['post', postId],
             queryFn: () => httpService.getPostById(postId),
