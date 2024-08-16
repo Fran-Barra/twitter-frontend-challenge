@@ -14,7 +14,6 @@ import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState<User | null>(null);
-  const [following, setFollowing] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalValues, setModalValues] = useState({
     text: "",
@@ -24,7 +23,7 @@ const ProfilePage = () => {
   });
   const service = useHttpRequestService()
   const reactQueryService = useReactQueryProxy()
-
+    
   const id = useParams().id;
   const navigate = useNavigate();
 
@@ -33,23 +32,35 @@ const ProfilePage = () => {
   //TODO: manage error
   const {data: user, isLoading, error} = reactQueryService.useMe()
 
+
+  const getProfileData = async () => {
+    service
+        .getProfile(id || '')
+        .then((res) => {
+          setProfile(res);
+        })
+        .catch((e) => {
+          service
+              .getProfileView(id)
+              .then((res) => {
+                setProfile(res);                
+              })
+              .catch((error2) => {
+                console.log(error2);
+              });
+        });
+  };
+
   const handleButtonType = (): { component: ButtonType; text: string } => {
-    if (profile?.id === user?.id)
+    if (!profile) return {component: ButtonType.DISABLED, text: t("buttons.follow")}
+    if (profile.id === user?.id)
       return {component: ButtonType.DELETE, text: t("buttons.delete")};
-    if (following)
+    if (profile.follows)
       return {component: ButtonType.OUTLINED, text: t("buttons.unfollow")};
     else return {component: ButtonType.FOLLOW, text: t("buttons.follow")};
   };
 
-  const unfollowMutation = reactQueryService.useUnfollowUser({
-    data: {userId: profile!.id},
-    onSuccess: () => {
-      setFollowing(false);
-      setShowModal(false);
-      //this had an await, but I don't understand the purpose of an await on a callback
-      getProfileData()
-    }
-  })
+
 
   const handleSubmit = () => {
     if (profile?.id === user?.id) {
@@ -66,15 +77,24 @@ const ProfilePage = () => {
     getProfileData().then();
   }, [id]);
 
-  //TODO: this is strange, ask why
-  if (!id) return null;
-
-  const followMutation = reactQueryService.useFollowUser({
-    data: {userId: id},
+  //TODO: ask if there is a better way to do this
+  const unfollowMutation = reactQueryService.useUnfollowUser({
+    data: {userId: id || ''},
     onSuccess: () => {
-      service.getProfile(id).then((res) => setProfile(res));
+      setShowModal(false);
+      getProfileData()
     }
   })
+
+  const followMutation = reactQueryService.useFollowUser({
+    data: {userId: id || ''},
+    onSuccess: () => {
+      service.getProfile(id || '').then((res) => setProfile(res));
+    }
+  })
+
+  //TODO: this is strange, ask why null
+  if (!id || !user) return null;
 
   const handleButtonAction = async () => {
     if (profile?.id === user?.id) {
@@ -86,7 +106,7 @@ const ProfilePage = () => {
         buttonText: t("buttons.delete"),
       });
     } else {
-      if (following) {
+      if (profile?.follows || false) {
         setShowModal(true);
         setModalValues({
           text: t("modal-content.unfollow"),
@@ -100,30 +120,7 @@ const ProfilePage = () => {
       return await getProfileData();
     }
   };
-
-  const getProfileData = async () => {
-    service
-        .getProfile(id)
-        .then((res) => {
-          setProfile(res);
-          setFollowing(
-              res
-                  ? res?.followers.some((follower: User) => follower.id === user?.id)
-                  : false
-          );
-        })
-        .catch(() => {
-          service
-              .getProfileView(id)
-              .then((res) => {
-                setProfile(res);
-                setFollowing(false);
-              })
-              .catch((error2) => {
-                console.log(error2);
-              });
-        });
-  };
+  
 
   return (
       <>
@@ -158,7 +155,7 @@ const ProfilePage = () => {
                   </StyledContainer>
                 </StyledContainer>
                 <StyledContainer width={"100%"}>
-                  {profile.followers ? (
+                  {!profile.private || profile.follows || profile.id === user.id ? (
                       <ProfileFeed/>
                   ) : (
                       <StyledH5>Private account</StyledH5>

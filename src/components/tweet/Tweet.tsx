@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {StyledTweetContainer} from "./TweetContainer";
 import AuthorData from "./user-post-data/AuthorData";
-import type {Post, User} from "../../service";
+import type {Post} from "../../service";
 import {StyledReactionsContainer} from "./ReactionsContainer";
 import Reaction from "./reaction/Reaction";
-import {useHttpRequestService} from "../../service/HttpRequestService";
 import {IconType} from "../icon/Icon";
 import {StyledContainer} from "../common/Container";
 import ThreeDots from "../common/ThreeDots";
@@ -13,45 +12,41 @@ import ImageContainer from "./tweet-image/ImageContainer";
 import CommentModal from "../comment/comment-modal/CommentModal";
 import {useNavigate} from "react-router-dom";
 import useReactQueryProxy from "../../service/reactQueryRequestProxy";
+import { ReactionType } from "../../util/ReactionType";
 
 interface TweetProps {
   post: Post;
 }
 
 const Tweet = ({post}: TweetProps) => {
-  const [actualPost, setActualPost] = useState<Post>(post);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
-  const service = useHttpRequestService();
-  const reactQueryService = useReactQueryProxy();
+  const service = useReactQueryProxy();
   const navigate = useNavigate();
 
   //TODO: manage error and loading
-  const {data: user, isLoading, error} = reactQueryService.useMe()
+  const {data: user, isLoading, error} = service.useMe()
+  const {data: actualPost, isLoading: postLoading} = service.useGetPostById(post.id)
 
-  const getCountByType = (type: string): number => {
-    return actualPost?.reactions?.filter((r) => r.type === type).length ?? 0;
-  };
+  const createReactionMutation = service.useCreateReaction({})
+  const deleteReactionMutation = service.useDeleteReaction({})
 
-  const handleReaction = async (type: string) => {
-    const reacted = actualPost.reactions.find(
-        (r) => r.type === type && r.userId === user?.id
-    );
+  const handleReaction = async (type: ReactionType) => {
+    if (postLoading || !actualPost) return
+    const reacted = hasReactedByType(type);
     if (reacted) {
-      await service.deleteReaction(reacted.id);
+      deleteReactionMutation.mutate({postId: actualPost.id, reactionType: type})
     } else {
-      await service.createReaction(actualPost.id, type);
+      createReactionMutation.mutate({postId: actualPost.id, reactionType: type})
     }
-    const newPost = await service.getPostById(post.id);
-    setActualPost(newPost);
   };
 
-  const hasReactedByType = (type: string): boolean => {
-    return actualPost.reactions.some(
-        (r) => r.type === type && r.userId === user?.id
-    );
+  const hasReactedByType = (type: ReactionType): boolean => {    
+    if (!actualPost) return (type === ReactionType.LIKE ? post.likedByUser : post.retweetedByUser) || false
+    return (type === ReactionType.LIKE ? actualPost.likedByUser : actualPost.retweetedByUser) || false
   };
 
+  //TODO: check how the undefined actualPost is being managed.
   return (
       <StyledTweetContainer>
         <StyledContainer
@@ -96,7 +91,7 @@ const Tweet = ({post}: TweetProps) => {
         <StyledReactionsContainer>
           <Reaction
               img={IconType.CHAT}
-              count={actualPost?.comments?.length}
+              count={(actualPost || post).qtyComments}
               reactionFunction={() =>
                   window.innerWidth > 600
                       ? setShowCommentModal(true)
@@ -107,17 +102,17 @@ const Tweet = ({post}: TweetProps) => {
           />
           <Reaction
               img={IconType.RETWEET}
-              count={getCountByType("RETWEET")}
-              reactionFunction={() => handleReaction("RETWEET")}
+              count={(actualPost || post).qtyRetweets}
+              reactionFunction={() => handleReaction(ReactionType.RETWEET)}
               increment={1}
-              reacted={hasReactedByType("RETWEET")}
+              reacted={hasReactedByType(ReactionType.RETWEET)}
           />
           <Reaction
               img={IconType.LIKE}
-              count={getCountByType("LIKE")}
-              reactionFunction={() => handleReaction("LIKE")}
+              count={(actualPost || post).qtyLikes}
+              reactionFunction={() => handleReaction(ReactionType.LIKE)}
               increment={1}
-              reacted={hasReactedByType("LIKE")}
+              reacted={hasReactedByType(ReactionType.LIKE)}
           />
         </StyledReactionsContainer>
         <CommentModal

@@ -25,8 +25,11 @@ export interface Post {
   createdAt: Date;
   authorId: string;
   author: Author;
-  reactions: Reaction[];
-  comments: Post[];
+  qtyComments: number;
+  qtyLikes: number;
+  qtyRetweets: number;
+  likedByUser?: boolean;
+  retweetedByUser?: boolean;
 }
 
 export interface Reaction {
@@ -45,6 +48,7 @@ export interface Author {
   profilePicture?: string;
   private: boolean;
   createdAt: Date;
+  follows: boolean;
 }
 
 export interface User {
@@ -54,8 +58,8 @@ export interface User {
   profilePicture?: string;
   private: boolean;
   createdAt: Date;
-  followers: Author[];
-  following: Author[];
+  follows: boolean;
+  followsBack: boolean;
   posts: Post[];
 }
 

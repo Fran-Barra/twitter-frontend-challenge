@@ -8,11 +8,12 @@ import { StyledH5 } from "../../components/common/text";
 import { StyledFeedContainer } from "../home-page/components/contentContainer/FeedContainer";
 import CommentFeed from "../../components/feed/CommentFeed";
 import { useParams } from "react-router-dom";
+import { Post } from "../../service";
 
 
 const PostPage = () => {
   const service = useHttpRequestService()
-  const [post, setPost] = useState()
+  const [post, setPost] = useState<Post>()
 
   const postId = useParams().id
 

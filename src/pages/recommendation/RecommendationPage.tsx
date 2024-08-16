@@ -46,6 +46,7 @@ const RecommendationPage = () => {
                   username={user.username}
                   profilePicture={user.profilePicture}
                   id={user.id}
+                  follows={user.follows}
                 />
               </StyledContainer>
             );
@@ -57,6 +58,7 @@ const RecommendationPage = () => {
                 username={user.username}
                 profilePicture={user.profilePicture}
                 id={user.id}
+                follows={user.follows}
               />
             );
           }
