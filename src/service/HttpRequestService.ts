@@ -119,14 +119,14 @@ const httpRequestService : HttpRequestService = {
   },
 
   followUser: async (userId: string) => {
-    const res = await server.post(`/follow/${userId}`);
+    const res = await server.post(`/follower/follow/${userId}`);
     if (res.status === 201) {
       return res.data;
     }
   },
 
   unfollowUser: async (userId: string) => {
-    const res = await server.delete(`/follow/${userId}`);
+    const res = await server.post(`/follower/unfollow/${userId}`);
     if (res.status === 200) {
       return res.data;
     }
