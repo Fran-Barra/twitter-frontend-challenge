@@ -3,6 +3,8 @@ import { useHttpRequestService } from "../service/HttpRequestService";
 import { setLength, updateFeed } from "../redux/user";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
+
+//TODO-FIX: this is not working correctly, should reset posts in query change ('' , following)
 export const useGetFeed = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -17,7 +19,10 @@ export const useGetFeed = () => {
     try {
       setLoading(true);
       setError(false);
+      
       service.getPosts(query).then((res) => {
+        console.log(res);
+        
         const updatedPosts = Array.from(new Set([...posts, ...res]));
         dispatch(updateFeed(updatedPosts));
         dispatch(setLength(updatedPosts.length));
