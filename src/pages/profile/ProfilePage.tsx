@@ -14,7 +14,6 @@ import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState<User | null>(null);
-  const [following, setFollowing] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalValues, setModalValues] = useState({
     text: "",
@@ -39,18 +38,12 @@ const ProfilePage = () => {
         .getProfile(id || '')
         .then((res) => {
           setProfile(res);
-          setFollowing(res?.follows);
         })
         .catch((e) => {
-          console.log("FAILING HERE");
-          console.error(e);
-          
-          
           service
               .getProfileView(id)
               .then((res) => {
-                setProfile(res);
-                setFollowing(false);
+                setProfile(res);                
               })
               .catch((error2) => {
                 console.log(error2);
@@ -59,9 +52,10 @@ const ProfilePage = () => {
   };
 
   const handleButtonType = (): { component: ButtonType; text: string } => {
-    if (profile?.id === user?.id)
+    if (!profile) return {component: ButtonType.DISABLED, text: t("buttons.follow")}
+    if (profile.id === user?.id)
       return {component: ButtonType.DELETE, text: t("buttons.delete")};
-    if (following)
+    if (profile.follows)
       return {component: ButtonType.OUTLINED, text: t("buttons.unfollow")};
     else return {component: ButtonType.FOLLOW, text: t("buttons.follow")};
   };
@@ -87,9 +81,7 @@ const ProfilePage = () => {
   const unfollowMutation = reactQueryService.useUnfollowUser({
     data: {userId: id || ''},
     onSuccess: () => {
-      setFollowing(false);
       setShowModal(false);
-      //this had an await, but I don't understand the purpose of an await on a callback
       getProfileData()
     }
   })
@@ -114,7 +106,7 @@ const ProfilePage = () => {
         buttonText: t("buttons.delete"),
       });
     } else {
-      if (following) {
+      if (profile?.follows || false) {
         setShowModal(true);
         setModalValues({
           text: t("modal-content.unfollow"),
@@ -128,6 +120,7 @@ const ProfilePage = () => {
       return await getProfileData();
     }
   };
+  
 
   return (
       <>
