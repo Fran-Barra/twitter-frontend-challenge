@@ -36,7 +36,13 @@
     "unexpected": "Sorry, something went wrong. Please try again",
     "login": "Sorry, your username or password was incorrect. Please try again.",
     "sign-up": {
-      "password": "Password is not strong enough",
+      "required": "Please fill this field, it is required",
+      "name-with-@": "Name can't contain @",
+      "name-size": "Name can must be between 4 and 20 characters long",
+      "username-size": "Username can must be between 4 and 20 characters long",
+      "not-valid-mail": "This is not a valid mail direction",
+      "password": "Password is not strong enough, requires a capital letter, a not capital letter, a symbol and a number",
+      "ps-must-match": "Password and confirm password are not matching",
       "user-exists": "User with that username or email already exists"
     }
   },

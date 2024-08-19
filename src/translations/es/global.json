@@ -38,8 +38,14 @@
     "unexpected": "Lo siento, algo salio mal. Por favor intentalo de nuevo",
     "login": "Lo siento, tu nombre de usuario o contraseña es incorrecto. Por favor, inténtalo de nuevo.",
     "sign-up": {
-      "password": "La contraseña no es lo suficientemente fuerte",
-      "user-exists": "Un usuario con ese nombre o mail ya existe"
+      "required": "Por favor este campo es requerido",
+      "name-with-@": "El nombre no puede contener @",
+      "name-size": "El nombre debe ser entre 4 a 20 caracteres de largo",
+      "username-size": "El nombre de usuario debe ser entre 4 a 20 caracteres de largo",
+      "not-valid-mail": "La dirección de mail no es valida",
+      "password": "La contraseña no es lo suficientemente fuerte, require una mayuscula, una minuscula, un simbolo y un numero",
+      "ps-must-match": "La contraseña y la confirmación de contraseña no coinciden",
+      "user-exists": "Ya existe un usuario con ese nombre o mail"
     }
   },
   "input-params": {
