@@ -62,10 +62,7 @@ const FollowUserBox = ({
     } else {
         followMutation.mutate();
     }
-  };
-
-  console.log("follow user box present");
-  
+  };  
 
   return (
       <StyledFollowUserBox>
