@@ -2,7 +2,8 @@ import React from "react";
 import Avatar from "../common/avatar/Avatar";
 import icon from "../../assets/icon.jpg";
 import { useNavigate } from "react-router-dom";
-import "./UserDataBox.css";
+import { StyledUserContainer } from "./StyledUserContainer";
+import { StyledUserContainerP } from "./StyledUserContainerP";
 
 interface UserDataBoxProps {
   name?: string;
@@ -20,8 +21,11 @@ export const UserDataBox = ({
 }: UserDataBoxProps) => {
   const navigate = useNavigate();
 
+  console.log("user data is visible");
+  
+
   return (
-    <div className="user-container" onClick={onClick}>
+    <StyledUserContainer onClick={onClick}>
       <Avatar
         width={"48px"}
         height={"48px"}
@@ -29,11 +33,11 @@ export const UserDataBox = ({
         onClick={() => onClick ?? navigate(`/profile/${id}`)}
         alt={name ?? "Name"}
       />
-      <div className="user-info-container">
-        <p>{name ?? "Name"}</p>
-        <p style={{ color: "#566370" }}>{"@" + username ?? "@Username"}</p>
-      </div>
-    </div>
+      <StyledUserContainer>
+        <StyledUserContainerP>{name ?? "Name"}</StyledUserContainerP>
+        <StyledUserContainerP style={{ color: "#566370" }}>{"@" + username ?? "@Username"}</StyledUserContainerP>
+      </StyledUserContainer>
+    </StyledUserContainer>
   );
 };
 
