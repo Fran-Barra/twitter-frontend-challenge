@@ -1,6 +1,6 @@
 import axios from "axios";
 import server from "./axiosServer";
-import type { Post, PostData, SingInData, SingUpData, User } from "./index";
+import type { Post, PostData, SignUpData, SingInData, User } from "./index";
 import { S3Service } from "./S3Service";
 import { ReactionType } from "../util/ReactionType";
 
@@ -18,7 +18,7 @@ interface HttpRequestService {
 }
 
 const httpRequestService : HttpRequestService = {
-  signUp: async (data: Partial<SingUpData>) => {
+  signUp: async (data: Partial<SignUpData>) => {
     const res = await server.post(`/auth/signup`, {...data, privateUser: true});
 
     if (res.status === 201) {
