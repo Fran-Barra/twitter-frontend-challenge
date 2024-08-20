@@ -14,7 +14,6 @@ const HideOnClickOutside = ({Wrapper, wrapperProps, isOpen, onClose, children} :
 
     const handleButtonClick = (event: MouseEvent) => {
         if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-            console.log("calling close");
             onClose()
             return
         }
