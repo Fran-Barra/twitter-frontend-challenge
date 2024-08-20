@@ -19,10 +19,7 @@ export const UserDataBox = ({
   id,
   onClick,
 }: UserDataBoxProps) => {
-  const navigate = useNavigate();
-
-  console.log("user data is visible");
-  
+  const navigate = useNavigate();  
 
   return (
     <StyledUserContainer onClick={onClick}>
