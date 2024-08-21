@@ -17,7 +17,10 @@ server.interceptors.request.use(
 
 server.interceptors.response.use(
     null,
-    err => {        
+    err => {   
+        //TODO: add a "middleware" or interceptor for toast, considering the path 
+        //of the error the toast should have different messages
+        //this would offer less control
         console.error(err)
         if (axios.isAxiosError(err)) {
             if (err.status === 401) {
