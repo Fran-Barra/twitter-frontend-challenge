@@ -18,6 +18,8 @@ export const StyledToastContainer = styled.div`
       switch (props.type) {
         case ToastType.ALERT:
           return props.theme.colors.errorContainer;
+        case ToastType.INFO:
+          return props.theme.colors.outline
         default:
           return props.theme.colors.errorContainer;
       }
@@ -30,6 +32,8 @@ export const StyledToastContainer = styled.div`
       switch (props.type) {
         case ToastType.ALERT:
           return props.theme.colors.errorContainer;
+        case ToastType.INFO:
+            return props.theme.colors.black
         default:
           return props.theme.colors.errorContainer;
       }

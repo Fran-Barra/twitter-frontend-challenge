@@ -4,6 +4,7 @@ import { AlertIcon } from "../icon/Icon";
 
 export enum ToastType {
   ALERT = "ALERT",
+  INFO = "INFO",
 }
 
 interface ToastProps {
@@ -16,8 +17,10 @@ interface ToastProps {
 const Toast = ({ message, type, show, onClose}: ToastProps) => {
   const [isShown, setIsShown] = useState<boolean>(show ?? true);
 
+  //TODO: ask how is the correct way to use the colors
   const iconMap = {
     [ToastType.ALERT]: <AlertIcon />,
+    [ToastType.INFO]: <AlertIcon color="#000000"/>
   };
 
   const toastIcon = iconMap[type] || null;
