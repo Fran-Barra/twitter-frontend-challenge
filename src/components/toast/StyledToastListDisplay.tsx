@@ -5,7 +5,7 @@ export const StyledToastListDisplay = styled.ul`
     width: auto;
 
     top: 0px;
-    left: 0px;
+    right: 0px;
     padding-top: 10px;
     padding-left: 10px;
     
