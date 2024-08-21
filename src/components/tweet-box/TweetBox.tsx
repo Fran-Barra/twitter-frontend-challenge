@@ -46,7 +46,11 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     const handleSubmit = async () => {
         try {
             httpService.createPost({content: content, parentId: parentId, images: images})
-                .then(()=>createToast(t("toast.created-post"), ToastType.INFO))
+                .then(()=>createToast(t("toast.post.created"), ToastType.INFO))
+                .catch((e)=>{
+                    console.error(e)
+                    createToast(t("toast.post.failed"), ToastType.ALERT)
+                })
             setContent("");
             setImages([]);
             setImagesPreview([]);

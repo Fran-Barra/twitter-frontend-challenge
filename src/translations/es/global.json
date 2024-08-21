@@ -72,6 +72,9 @@
     "register": "Crea tu cuenta"
   },
   "toast": {
-    "created-post": "Post creado exitosamente"
+    "post": {
+      "created": "Post creado exitosamente",
+      "failed": "Fallo la creación del post"
+    }
   }
 }

@@ -70,6 +70,9 @@
     "register": "Create your account"
   },
   "toast": {
-    "created-post": "Successfully created post"
+    "post": {
+      "created": "Successfully created post",
+      "failed": "Failed to create post"
+    }
   }
 }
