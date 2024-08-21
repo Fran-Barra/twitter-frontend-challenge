@@ -1,12 +1,12 @@
 import { useContext } from "react"
 import ToastContext, { ToastData } from "./ToastContext"
-import Toast, { ToastType } from "./Toast"
+import Toast from "./Toast"
 import { StyledToastListDisplay } from "./StyledToastListDisplay"
 import { TOASTS_DURATION } from "../../util/Constants"
 
 
 export const ToastListDisplay = () => {
-    const {toasts, removeToast, createToast} = useContext(ToastContext)
+    const {toasts, removeToast} = useContext(ToastContext)
 
     const dataToToast = (toastData: ToastData) => {
         const closeToast = () => {
