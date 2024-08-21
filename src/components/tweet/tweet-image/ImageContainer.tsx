@@ -10,6 +10,8 @@ interface ImageContainerProps {
   editable?: boolean;
   removeFunction?: (index: number) => void;
 }
+
+//TODO: manage image not found (404)
 const ImageContainer = ({
   images,
   editable,
