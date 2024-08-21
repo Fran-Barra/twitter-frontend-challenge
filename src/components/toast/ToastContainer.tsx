@@ -12,7 +12,6 @@ export const StyledToastContainer = styled.div`
   padding: 8px 16px;
   align-items: center;
   gap: 16px;
-  position: fixed;
   border-radius: 8px;
   border: 1px solid
     ${(props: ToastContainerProps) => {
@@ -24,6 +23,7 @@ export const StyledToastContainer = styled.div`
       }
     }};
   background: ${(props: ToastContainerProps) => props.theme.background};
+  pointer-events: auto;
 
   p {
     color: ${(props: ToastContainerProps) => {
