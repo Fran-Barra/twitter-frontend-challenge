@@ -68,5 +68,8 @@
   "title": {
     "login": "Enter your email or username",
     "register": "Create your account"
+  },
+  "toast": {
+    "created-post": "Successfully created post"
   }
 }

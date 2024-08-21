@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Button from "../button/Button";
 import TweetInput from "../tweet-input/TweetInput";
 import {useHttpRequestService} from "../../service/HttpRequestService";
@@ -15,6 +15,8 @@ import { useAppSelector } from "../../redux/hooks";
 import { User } from "../../service";
 import { StyledButtonContainer } from "./ButtonContainer";
 import useReactQueryProxy from "../../service/reactQueryRequestProxy";
+import ToastContext from "../toast/ToastContext";
+import { ToastType } from "../toast/Toast";
 
 interface TweetBoxProps {
     parentId?: string
@@ -27,6 +29,7 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     const [content, setContent] = useState("");
     const [images, setImages] = useState<File[]>([]);
     const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+    const {createToast} = useContext(ToastContext)
 
     const {length, query} : {length : number, query : string} = useAppSelector((state) => state.user);
     const httpService = useHttpRequestService();
@@ -43,6 +46,7 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     const handleSubmit = async () => {
         try {
             httpService.createPost({content: content, parentId: parentId, images: images})
+                .then(()=>createToast(t("toast.created-post"), ToastType.INFO))
             setContent("");
             setImages([]);
             setImagesPreview([]);

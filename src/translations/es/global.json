@@ -70,5 +70,8 @@
   "title": {
     "login": "Ingresa tu correo electrónico o @nombre_de_usuario.",
     "register": "Crea tu cuenta"
+  },
+  "toast": {
+    "created-post": "Post creado exitosamente"
   }
 }
