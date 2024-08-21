@@ -10,9 +10,10 @@ interface ToastProps {
   message: string;
   type: ToastType;
   show?: boolean;
+  onClose?: ()=>void;
 }
 
-const Toast = ({ message, type, show }: ToastProps) => {
+const Toast = ({ message, type, show, onClose}: ToastProps) => {
   const [isShown, setIsShown] = useState<boolean>(show ?? true);
 
   const iconMap = {
@@ -21,10 +22,15 @@ const Toast = ({ message, type, show }: ToastProps) => {
 
   const toastIcon = iconMap[type] || null;
 
+  const handleClick = () => {
+    setIsShown(false)
+    if (onClose) onClose()
+  } 
+  
   return (
     <>
       {isShown && (
-        <StyledToastContainer type={type} onClick={() => setIsShown(false)}>
+        <StyledToastContainer type={type} onClick={handleClick}>
           {toastIcon}
           <p>{message}</p>
         </StyledToastContainer>
