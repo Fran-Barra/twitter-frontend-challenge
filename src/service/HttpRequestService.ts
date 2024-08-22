@@ -255,7 +255,7 @@ const httpRequestService : HttpRequestService = {
     limit: number,
     after: string
   ) => {
-    const res = await server.get(`/post/comment/by_post/${id}`, {
+    const res = await server.get(`/post/comment/${id}`, {
       params: {
         limit,
         after,
@@ -267,7 +267,7 @@ const httpRequestService : HttpRequestService = {
   },
   
   getCommentsByPostId: async (id: string) => {
-    const res = await server.get(`/post/comment/by_post/${id}`);
+    const res = await server.get(`/post/comment/${id}`);
     if (res.status === 200) {
       return res.data;
     }
