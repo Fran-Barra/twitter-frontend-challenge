@@ -1,19 +1,16 @@
-import { ReactNode, useEffect, useRef } from "react"
-import { StyledComponent } from "styled-components"
+import { ReactNode, Ref, useEffect, useRef } from "react"
 
 interface HideOnClickOutsideProps {
-    Wrapper: StyledComponent<"div", any>,
-    wrapperProps?: any
+    modalRef: React.RefObject<HTMLElement>
     isOpen : boolean
     onClose : () => void
     children: ReactNode
 }
 
-const HideOnClickOutside = ({Wrapper, wrapperProps, isOpen, onClose, children} : HideOnClickOutsideProps) => {
-    const containerRef = useRef<HTMLDivElement>(null);
+const HideOnClickOutside = ({modalRef, isOpen, onClose, children} : HideOnClickOutsideProps) => {
 
     const handleButtonClick = (event: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
             onClose()
             return
         }
@@ -27,12 +24,8 @@ const HideOnClickOutside = ({Wrapper, wrapperProps, isOpen, onClose, children} :
             }
     }, [isOpen])
     
-    if (!isOpen) return <></>
-    return (
-        <Wrapper ref={containerRef} {...wrapperProps}>
-            {children}
-        </Wrapper>
-    )
+    return <>{isOpen && children}</>
 }
+
 
 export default HideOnClickOutside

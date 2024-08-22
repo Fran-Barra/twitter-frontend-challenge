@@ -10,6 +10,7 @@ import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
 import useReactQueryProxy from "../../../service/reactQueryRequestProxy";
+import { createPortal } from "react-dom";
 
 interface LogoutPromptProps {
   show: boolean;
@@ -75,22 +76,27 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
           </StyledContainer>
         </StyledPromptContainer>
       )}
-      <Modal
-        show={showModal}
-        text={t("modal-content.logout")}
-        img={logo}
-        title={t("modal-title.logout")}
-        acceptButton={
-          <Button
-            buttonType={ButtonType.FOLLOW}
-            text={t("buttons.logout")}
-            size={"MEDIUM"}
-            onClick={handleLogout}
-          />
-        }
-        onClose={() => setShowModal(false)}
-      />
-    </>
+      {
+        showModal && createPortal(
+          <Modal
+            show={showModal}
+            text={t("modal-content.logout")}
+            img={logo}
+            title={t("modal-title.logout")}
+            acceptButton={
+              <Button
+                buttonType={ButtonType.FOLLOW}
+                text={t("buttons.logout")}
+                size={"MEDIUM"}
+                onClick={handleLogout}
+              />
+            }
+            onClose={() => setShowModal(false)}
+          />,
+          document.body
+        )
+      }
+      </>
   );
 };
 

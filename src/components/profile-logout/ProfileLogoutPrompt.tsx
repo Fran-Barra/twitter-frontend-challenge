@@ -3,7 +3,7 @@ import {
     StyledLogoutPrompt,
     StyledProfileLogoutPromptContainer
 } from "./StyledProfileLogoutPromptContainer";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
@@ -17,6 +17,7 @@ interface ProfileLogoutPromptProps {
 }
 
 const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
+    const modalRef = useRef<HTMLDivElement>(null)
     const [logoutOpen, setLogoutOpen] = useState(false);
     const service = useReactQueryProxy()
 
@@ -47,12 +48,13 @@ const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
             <StyledProfileLogoutPromptContainer direction={direction}>
                 <img src={user?.profilePicture ?? icon} className="icon" alt="Icon" onError={(e)=>e.currentTarget.src = icon}/>
                 <HideOnClickOutside 
-                    Wrapper={StyledLogoutPrompt} 
-                    wrapperProps={{margin: margin, onClick: (event: React.MouseEvent<Element, MouseEvent>) => handleButtonClick(event)}}
+                    modalRef={modalRef}
                     isOpen={logoutOpen} 
                     onClose={handleLogout}
                 >
-                    <LogoutPrompt show={logoutOpen}/>
+                    <StyledLogoutPrompt ref={modalRef} margin={margin} onClick={(event: React.MouseEvent<Element, MouseEvent>) => handleButtonClick(event)}>
+                        <LogoutPrompt show={logoutOpen}/>
+                    </StyledLogoutPrompt>
                 </HideOnClickOutside>
             </StyledProfileLogoutPromptContainer>
             <StyledContainer padding={"4px 0"} gap={"4px"} className={'user-info'}>

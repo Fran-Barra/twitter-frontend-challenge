@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useRef } from "react";
 import { StyledBlurredBackground } from "../common/BlurredBackground";
 import { ModalCloseButton } from "../common/ModalCloseButton";
 import { StyledTweetModalContainer } from "../tweet-modal/TweetModalContainer";
@@ -11,17 +11,20 @@ interface PostModalProps {
 }
 
 export const PostModal = ({ onClose, show, children }: PostModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null)
   return (
     <>
       {show && (
         <StyledBlurredBackground>
           <HideOnClickOutside
-            Wrapper={StyledTweetModalContainer}
+            modalRef={modalRef}
             isOpen={show}
             onClose={onClose}
           >
-            <ModalCloseButton onClick={onClose} />
-            {children}
+            <StyledTweetModalContainer ref={modalRef}>
+              <ModalCloseButton onClick={onClose} />
+              {children}
+            </StyledTweetModalContainer>
           </HideOnClickOutside>
         </StyledBlurredBackground>
       )}
