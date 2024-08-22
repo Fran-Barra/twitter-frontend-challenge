@@ -13,6 +13,7 @@ import CommentModal from "../comment/comment-modal/CommentModal";
 import {useNavigate} from "react-router-dom";
 import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 import { ReactionType } from "../../util/ReactionType";
+import { createPortal } from "react-dom";
 
 interface TweetProps {
   post: Post;
@@ -115,11 +116,14 @@ const Tweet = ({post}: TweetProps) => {
               reacted={hasReactedByType(ReactionType.LIKE)}
           />
         </StyledReactionsContainer>
-        <CommentModal
-            show={showCommentModal}
-            post={post}
-            onClose={() => setShowCommentModal(false)}
-        />
+        { showCommentModal && createPortal(
+          <CommentModal
+              show={showCommentModal}
+              post={post}
+              onClose={() => setShowCommentModal(false)}
+          />,
+          document.body
+        )}
       </StyledTweetContainer>
   );
 };
