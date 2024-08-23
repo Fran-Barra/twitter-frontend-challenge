@@ -75,6 +75,10 @@
     "post": {
       "created": "Post creado exitosamente",
       "failed": "Fallo la creación del post"
+    },
+    "follow": {
+      "failed-follow": "Perdon, no fue posible empezar a seguir",
+      "failed-unfollow": "Perdon, no fue posible dejar de seguir"
     }
   }
 }
