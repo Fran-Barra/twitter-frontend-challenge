@@ -24,23 +24,14 @@ const FollowUserBox = ({
   const {t} = useTranslation();
   const service = useReactQueryProxy()
 
-
-  //TODO: handle loading and error
-  const {data: user, isLoading, error} = service.useMe()
-  useEffect(() => {
-      if (!user) {
-        console.log("failed to get me");
-        return
-      }
-      setIsFollowing(follows)
-  }, [user]);
-
-
   const [isFollowing, setIsFollowing] = useState(false);
 
   const followMutation = service.useFollowUser({
     data: {userId: id},
-    onSuccess: ()=>setIsFollowing(true),
+    onSuccess: ()=>{
+      console.log("follow success");     
+      setIsFollowing(true)
+    },
     onError: (error)=>{
       //TODO: manage error
       console.error(error);
@@ -49,7 +40,11 @@ const FollowUserBox = ({
   
   const unfollowMutation = service.useUnfollowUser({
     data: {userId: id},
-    onSuccess: ()=>setIsFollowing(false),
+    onSuccess: ()=>{
+      console.log("unfollow success");
+      
+      setIsFollowing(false)
+    },
     onError: (error) => {
       //TODO: manage error
       console.error(error);
