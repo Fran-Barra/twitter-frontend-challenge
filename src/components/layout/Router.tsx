@@ -10,6 +10,7 @@ import TweetPage from "../../pages/create-tweet-page/TweetPage";
 import CommentPage from "../../pages/create-comment-page/CommentPage";
 import PostPage from "../../pages/post-page/PostPage";
 import isAuthenticated from "../../service/isAuthenticated";
+import MessagesPage from "../../pages/messages/MessagesPage";
 
 const WithNav = () => {
   return (
@@ -46,6 +47,7 @@ export const ROUTER = createBrowserRouter([
         element: <HomePage />,
       },
       {
+        //TODO: no button or way to access this page
         path: "/recommendations",
         element: <RecommendationPage />,
       },
@@ -65,6 +67,10 @@ export const ROUTER = createBrowserRouter([
         path: "/post/:id",
         element: <CommentPage />,
       },
+      {
+        path: 'messages',
+        element: <MessagesPage />
+      }
     ],
   },
 ]);
