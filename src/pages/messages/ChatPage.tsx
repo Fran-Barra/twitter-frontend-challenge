@@ -8,6 +8,7 @@ import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 import { Socket } from "socket.io-client";
 import { SocketIOEvent } from "../../service/SocketIOEvent";
 import React from "react";
+import Avatar from "../../components/common/avatar/Avatar";
 
 
 interface ChatPageProps {
@@ -41,7 +42,7 @@ const ChatMessage = React.forwardRef<HTMLDivElement, ChatMessageProps>((
                     alignItems={"center"}
                     height={"auto"}
                     >
-                    <img src={sender.profilePicture ?? Icon} height={"30px"} width={"30px"} className="icon" alt="Icon"/>
+                    <Avatar src={sender.profilePicture ?? Icon}  height={"30px"} width={"30px"} alt={"Icon"} />
                     <p>{sender.username}</p>
                 </StyledContainer>
             }
