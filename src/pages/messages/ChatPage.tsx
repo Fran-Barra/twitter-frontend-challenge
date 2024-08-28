@@ -1,8 +1,8 @@
 import { StyledContainer } from "../../components/common/Container"
 import { StyledH3, StyledP } from "../../components/common/text"
-import { Author, ChatDTO, MessageDTO, User } from "../../service"
+import { Author, ChatDTO, MessageDTO } from "../../service"
 import Icon from "../../assets/icon.jpg";
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MessageInput from "../../components/message-input/MessageInput";
 import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 import { Socket } from "socket.io-client";
