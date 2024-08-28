@@ -1,6 +1,6 @@
 import axios from "axios";
 import server from "./axiosServer";
-import type { Post, PostData, SignUpData, SingInData, User } from "./index";
+import type { ChatDTO, Post, PostData, SignUpData, SingInData, User } from "./index";
 import { S3Service } from "./S3Service";
 import { ReactionType } from "../util/ReactionType";
 
@@ -13,6 +13,8 @@ interface HttpRequestService {
   getPostById: (postId : string) => Promise<Post>
   createReaction: (postId : string, reactionType: ReactionType) => Promise<void>
   deleteReaction: (postId : string, reactionType: ReactionType) => Promise<void>
+
+  getChats: () => Promise<ChatDTO[]>
 
   [key: string]: (...args: any[]) => Promise<any | undefined>;
 }
