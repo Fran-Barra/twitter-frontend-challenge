@@ -14,6 +14,7 @@ interface HttpRequestService {
   createReaction: (postId : string, reactionType: ReactionType) => Promise<void>
   deleteReaction: (postId : string, reactionType: ReactionType) => Promise<void>
 
+  createChat: (participantIds: string[], name?: string) => Promise<void>
   getChats: () => Promise<ChatDTO[]>
 
   [key: string]: (...args: any[]) => Promise<any | undefined>;
@@ -37,7 +38,7 @@ const httpRequestService : HttpRequestService = {
     }
   },
   createPost: async (data: PostData) => {
-    const body = {content: data.content, images: data.images}
+    const body = {content: data.content, images: data.images ? data.images.map(i=>'') : undefined}
     
     const res = data.parentId ? 
       await server.post(`/post/comment/${data.parentId}`, body) :
@@ -227,11 +228,11 @@ const httpRequestService : HttpRequestService = {
     }
   },
 
-  createChat: async (id: string) => {
+  createChat: async (participantIds: string[], name: string = "personal") => {
     const res = await server.post(
       `/chat`,
       {
-        users: [id],
+        participantIds: participantIds,
       }
     );
 
