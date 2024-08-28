@@ -12,12 +12,13 @@ const ContainerBase = styled.div`
     box-sizing: border-box;
     transition: 0.3s ease-in-out;
     position: relative;
-    scrollbar-width: auto;
+    scrollbar-width: none;
     border-radius: 0;
     min-height: auto;
     min-width: 0;
     width: 100%;
     -webkit-tap-highlight-color: transparent;
+    -ms-overflow-style: none
 `;
 
 export const StyledContainer = styled(ContainerBase).attrs<ContainerProps>(
