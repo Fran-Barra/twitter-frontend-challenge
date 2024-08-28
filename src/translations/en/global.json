@@ -79,5 +79,11 @@
       "failed-follow": "Sorry, could not start following",
       "failed-unfollow": "Sorry, could not stop following"
     }
+  },
+  "chat": {
+    "group-created": "chat created",
+    "not-latest-update": "--:--",
+    "message":"message:",
+    "input-placeholder": "message"
   }
 }
