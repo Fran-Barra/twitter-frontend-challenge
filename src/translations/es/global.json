@@ -46,7 +46,8 @@
       "password": "La contraseña no es lo suficientemente fuerte, require una mayuscula, una minuscula, un simbolo y un numero",
       "ps-must-match": "La contraseña y la confirmación de contraseña no coinciden",
       "user-exists": "Ya existe un usuario con ese nombre o mail"
-    }
+    },
+    "connection-error": "fallo de conexión"
   },
   "input-params": {
     "username": "Nombre de usuario",

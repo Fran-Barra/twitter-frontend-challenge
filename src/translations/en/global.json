@@ -45,7 +45,8 @@
       "password": "Password is not strong enough, requires a capital letter, a not capital letter, a symbol and a number",
       "ps-must-match": "Password and confirm password are not matching",
       "user-exists": "User with that username or email already exists"
-    }
+    },
+    "connection-error": "connection failed" 
   },
   "input-params": {
     "username": "Username",
