@@ -12,10 +12,10 @@ interface AvatarProps {
   height?: string;
 }
 
-const Avatar = ({ src, alt, onClick, width, height }: AvatarProps) => {
+const Avatar = ({ src, alt, onClick, width, height }: AvatarProps) => {  
   return (
     <StyledAvatarContainer onClick={onClick} width={width} height={height}>
-      {src !== null ? <img src={src} alt={alt} onError={(e)=>e.currentTarget.src = icon}/> : <NameImage name={alt} />}
+      {src !== null ? <img src={src ?? icon} alt={alt} onError={(e)=>e.currentTarget.src = icon}/> : <NameImage name={alt} />}
     </StyledAvatarContainer>
   );
 };
