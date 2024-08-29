@@ -1,5 +1,8 @@
 import axios from "axios";
 
+console.log("API");
+console.log(process.env.REACT_APP_API_URL);
+
 
 const server = axios.create({
     baseURL: process.env.REACT_APP_API_URL+"/api" || "https://twitter-ieea.onrender.com/api",
