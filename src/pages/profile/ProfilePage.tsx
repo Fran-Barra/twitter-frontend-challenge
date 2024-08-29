@@ -124,7 +124,6 @@ const ProfilePage = () => {
   
 
   return (
-      <>
         <StyledContainer
             maxHeight={"100vh"}
             borderRight={"1px solid #ebeef0"}
@@ -155,7 +154,7 @@ const ProfilePage = () => {
                     />
                   </StyledContainer>
                 </StyledContainer>
-                <StyledContainer width={"100%"}>
+                <StyledContainer width={"100%"} height={"70%"}>
                   {!profile.private || profile.follows || profile.id === user.id ? (
                       <ProfileFeed/>
                   ) : (
@@ -185,7 +184,6 @@ const ProfilePage = () => {
               </>
           )}
         </StyledContainer>
-      </>
   );
 };
 

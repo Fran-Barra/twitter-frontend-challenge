@@ -10,7 +10,9 @@ interface HttpRequestService {
   unfollowUser: (userId: string) => Promise<any | undefined>
   getProfile: (userId : string) => Promise<User>
 
+  getPosts: (following: boolean, limit: number, after?: string) => Promise<Post[]>
   getPostById: (postId : string) => Promise<Post>
+
   createReaction: (postId : string, reactionType: ReactionType) => Promise<void>
   deleteReaction: (postId : string, reactionType: ReactionType) => Promise<void>
 
@@ -66,8 +68,13 @@ const httpRequestService : HttpRequestService = {
   },
 
   //TODO: type query and use axios params
-  getPosts: async (query: string) => {
-    const res = await server.get(`/post/${query}`);
+  getPosts: async (following: boolean, limit: number, after?: string) => {
+    const res = await server.get(`/post${following ? '/following' : ''}`, {
+      params: {
+        limit,
+        after
+      }
+    });
     if (res.status === 200) {
       return res.data;
     }

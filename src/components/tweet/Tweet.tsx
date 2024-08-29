@@ -19,7 +19,7 @@ interface TweetProps {
   post: Post;
 }
 
-const Tweet = ({post}: TweetProps) => {
+const Tweet = React.forwardRef<HTMLDivElement, TweetProps>(({post} : TweetProps, ref) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
   const service = useReactQueryProxy();
@@ -49,7 +49,7 @@ const Tweet = ({post}: TweetProps) => {
 
   //TODO: check how the undefined actualPost is being managed.
   return (
-      <StyledTweetContainer>
+      <StyledTweetContainer ref={ref} >
         <StyledContainer
             style={{width: "100%"}}
             flexDirection={"row"}
@@ -126,6 +126,6 @@ const Tweet = ({post}: TweetProps) => {
         )}
       </StyledTweetContainer>
   );
-};
+});
 
 export default Tweet;

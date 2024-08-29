@@ -72,6 +72,13 @@ const useReactQueryProxy = () => {
                 if (options.onSuccess) options.onSuccess(data, variables, context)
             },
             onError: options.onError
+        }),
+
+
+        useGetPosts: (following: boolean, limit: number, after?: string) => useQuery({
+            queryKey: ['feed', following, limit, after],
+            queryFn: () => httpService.getPosts(following, limit, after),
+            staleTime: staleTimeForPost
         })
         
     }

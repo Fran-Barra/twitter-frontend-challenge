@@ -31,7 +31,7 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     const [imagesPreview, setImagesPreview] = useState<string[]>([]);
     const {createToast} = useContext(ToastContext)
 
-    const {length, query} : {length : number, query : string} = useAppSelector((state) => state.user);
+    //const {length, query} : {length : number, query : string} = useAppSelector((state) => state.user);
     const httpService = useHttpRequestService();
     const dispatch = useDispatch();
     const {t} = useTranslation();
@@ -54,10 +54,13 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
             setContent("");
             setImages([]);
             setImagesPreview([]);
-            dispatch(setLength(length + 1));
+            
+            //TODO: for what I have seen creating a new post does not show in your feed, so there is no requirement of updating
+
+            //dispatch(setLength(length + 1));
             //TODO: check why this: const posts = await httpService.getPosts(length + 1, "", query);
-            const posts = await httpService.getPosts(query);
-            dispatch(updateFeed(posts));
+            //const posts = await httpService.getPosts(query);
+            //dispatch(updateFeed(posts));
             close && close();
         } catch (e) {
             console.log(e);

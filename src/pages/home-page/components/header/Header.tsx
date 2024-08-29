@@ -4,7 +4,12 @@ import logo from "../../../../assets/logo.png";
 import {StyledHeaderContainer} from "./HeaderContainer";
 import ProfileLogoutPrompt from "../../../../components/profile-logout/ProfileLogoutPrompt";
 
-const Header = () => {
+interface HeaderProps {
+  onFollowingFeed: ()=>void;
+  onForYouFeed: ()=>void;
+}
+
+const Header = ({ onFollowingFeed, onForYouFeed} : HeaderProps) => {
 
   return (
       <>
@@ -13,7 +18,7 @@ const Header = () => {
           <div className="title-container">
             <img src={logo} className="logo" alt="Logo"/>
           </div>
-          <TabBar/>
+          <TabBar onFollowingFeed={onFollowingFeed} onForYouFeed={onForYouFeed}/>
         </StyledHeaderContainer>
       </>
   );

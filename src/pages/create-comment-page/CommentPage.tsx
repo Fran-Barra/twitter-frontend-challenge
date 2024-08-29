@@ -54,9 +54,10 @@ const CommentPage = () => {
   const handleSubmit = async () => {
     setContent("");
     setImages([]);
-    dispatch(setLength(length + 1));
-    const posts = await service.getPosts(query);
-    dispatch(updateFeed(posts));
+    //TODO: I don't thinks this is needed must check
+    //dispatch(setLength(length + 1));
+    //const posts = await service.getPosts(query);
+    //dispatch(updateFeed(posts));
     exit();
   };
   const handleRemoveImage = (index: number) => {
