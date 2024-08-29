@@ -21,9 +21,15 @@ server.interceptors.response.use(
         //TODO: add a "middleware" or interceptor for toast, considering the path 
         //of the error the toast should have different messages
         //this would offer less control
+        //PROBLEM => cant use use effect here
+        
         console.error(err)
+        
         if (axios.isAxiosError(err)) {
-            if (err.status === 401) {
+            console.log(err.code);
+
+            if (err.status === 401 || err.code === 'ERR_NETWORK') {
+                //TODO: SHOULD NOTIFY CONNECTION ERROR
                 localStorage.removeItem("token");
                 window.location.href = '/sign-in'
                 return

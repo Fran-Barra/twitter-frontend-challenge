@@ -154,6 +154,13 @@ Also, implement a CI/CD pipeline in github that runs these tests every time a pu
 
 **Why is it important?** Having code that does not work in your master branch is something we should avoid at all costs. Runing tests when you push to it is a great way of reducing the risk 
 
+**PENDING**
+- there are more nav bar items in the translations es and en (different), should add them to the navBar or ask Chona
+- global toasts
+- button
+- pagination for post
+- comments and posts sometimes mix up
+
 ### 🚀 To the moon
 
 Deploy your app to a hosting of your choice. Here are some recommended options:

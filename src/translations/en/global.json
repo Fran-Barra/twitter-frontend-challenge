@@ -8,7 +8,8 @@
   },
   "navbar": {
     "home": "Home",
-    "profile": "Profile"
+    "profile": "Profile",
+    "messages": "Messages"
   },
   "suggestion": {
     "who-to-follow": "Who to follow",
@@ -44,7 +45,9 @@
       "password": "Password is not strong enough, requires a capital letter, a not capital letter, a symbol and a number",
       "ps-must-match": "Password and confirm password are not matching",
       "user-exists": "User with that username or email already exists"
-    }
+    },
+    "connection-error": "connection failed",
+    "post-chat": "error creating chat"
   },
   "input-params": {
     "username": "Username",
@@ -78,5 +81,15 @@
       "failed-follow": "Sorry, could not start following",
       "failed-unfollow": "Sorry, could not stop following"
     }
+  },
+  "chat": {
+    "group-created": "chat created",
+    "not-latest-update": "--:--",
+    "message":"message:",
+    "input-placeholder": "message",
+    "create": "create chat",
+    "create-short": "create",
+    "follow-followback": "users must follow each other",
+    "created-successfully" : "created chat successfully"
   }
 }

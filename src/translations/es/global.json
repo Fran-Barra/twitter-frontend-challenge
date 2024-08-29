@@ -9,7 +9,7 @@
   "navbar": {
     "home": "Principal",
     "explore": "Explorar",
-    "message": "Mensajes",
+    "messages": "Mensajes",
     "profile": "Perfil"
   },
   "suggestion": {
@@ -46,7 +46,9 @@
       "password": "La contraseña no es lo suficientemente fuerte, require una mayuscula, una minuscula, un simbolo y un numero",
       "ps-must-match": "La contraseña y la confirmación de contraseña no coinciden",
       "user-exists": "Ya existe un usuario con ese nombre o mail"
-    }
+    },
+    "connection-error": "fallo de conexión",
+    "post-chat": "error creando chat"
   },
   "input-params": {
     "username": "Nombre de usuario",
@@ -80,5 +82,15 @@
       "failed-follow": "Perdon, no fue posible empezar a seguir",
       "failed-unfollow": "Perdon, no fue posible dejar de seguir"
     }
+  },
+  "chat": {
+    "group-created": "chat creado",
+    "not-latest-update": "--:--",
+    "message":"mensaje:",
+    "input-placeholder": "mensaje",
+    "create": "crear chat",
+    "create-short": "crear",
+    "follow-followback": "todos los usuarios se deben seguir mutuamente",
+    "created-successfully" : "chat creado exitosamente"
   }
 }

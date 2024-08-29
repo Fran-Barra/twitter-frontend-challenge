@@ -11,7 +11,6 @@ import {StyledNavBarContainer} from "./NavBarContainer";
 import {StyledContainer} from "../common/Container";
 import {StyledIconContainer} from "./IconContainer";
 import {StyledNavItemsContainer} from "./navItem/NavItemsContainer";
-import {User} from "../../service";
 import ProfileLogoutPrompt from "../profile-logout/ProfileLogoutPrompt";
 import reactQueryRequestProxy from "../../service/reactQueryRequestProxy";
 
@@ -63,6 +62,13 @@ const NavBar = () => {
                 icon={IconType.PROFILE}
                 selectedIcon={IconType.ACTIVE_PROFILE}
                 active={location.pathname === `/profile/${user?.id}`}
+            />
+            <NavItem
+              title={t("navbar.messages")}
+              onClick={()=>navigate("/messages")}
+              icon={IconType.MESSAGE}
+              selectedIcon={IconType.ACTIVE_MESSAGE}
+              active={location.pathname === "/messages"}
             />
             <StyledTweetButton
                 onClick={() => navigate("/compose/tweet")
