@@ -47,7 +47,8 @@
       "ps-must-match": "La contraseña y la confirmación de contraseña no coinciden",
       "user-exists": "Ya existe un usuario con ese nombre o mail"
     },
-    "connection-error": "fallo de conexión"
+    "connection-error": "fallo de conexión",
+    "post-chat": "error creando chat"
   },
   "input-params": {
     "username": "Nombre de usuario",
@@ -86,6 +87,10 @@
     "group-created": "chat creado",
     "not-latest-update": "--:--",
     "message":"mensaje:",
-    "input-placeholder": "mensaje"
+    "input-placeholder": "mensaje",
+    "create": "crear chat",
+    "create-short": "crear",
+    "follow-followback": "todos los usuarios se deben seguir mutuamente",
+    "created-successfully" : "chat creado exitosamente"
   }
 }

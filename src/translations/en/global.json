@@ -46,7 +46,8 @@
       "ps-must-match": "Password and confirm password are not matching",
       "user-exists": "User with that username or email already exists"
     },
-    "connection-error": "connection failed" 
+    "connection-error": "connection failed",
+    "post-chat": "error creating chat"
   },
   "input-params": {
     "username": "Username",
@@ -85,6 +86,10 @@
     "group-created": "chat created",
     "not-latest-update": "--:--",
     "message":"message:",
-    "input-placeholder": "message"
+    "input-placeholder": "message",
+    "create": "create chat",
+    "create-short": "create",
+    "follow-followback": "users must follow each other",
+    "created-successfully" : "created chat successfully"
   }
 }
