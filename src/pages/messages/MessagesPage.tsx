@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { StyledContainer } from "../../components/common/Container"
 import { useHttpRequestService } from "../../service/HttpRequestService"
 import { ChatDTO } from "../../service"
@@ -7,6 +7,11 @@ import { StyledP } from "../../components/common/text"
 import ChatPage from "./ChatPage"
 import { io, Socket } from "socket.io-client"
 import { SocketIOEvent } from "../../service/SocketIOEvent"
+import CreateChatPage from "./CreateChatPage"
+import ToastContext from "../../components/toast/ToastContext"
+import { ToastType } from "../../components/toast/Toast"
+import Button from "../../components/button/Button"
+import { ButtonType } from "../../components/button/StyledButton"
 
 interface ChatBoxProps {
     chat : ChatDTO;
@@ -66,9 +71,11 @@ const ChatBox = ({chat, selected, onClick}: ChatBoxProps) => {
 //TODO: move out socket logic to a service.
 const MessagesPage = () => {
     const [currentChat, setCurrentChat] = useState<ChatDTO | null>(null)
+    const [creatingChat, setCreatingChat] = useState(false)
     const [chats, setChats] = useState<ChatDTO[]>([])
     const [socket, setSocket] = useState<Socket | null>(null)
     const service = useHttpRequestService()
+    const { createToast } = useContext(ToastContext)
 
     useEffect(()=>{
         service.getChats().then((res)=>{
@@ -90,24 +97,50 @@ const MessagesPage = () => {
         }
     }, [])
 
+    const onCreateChat = (create : boolean) => {
+        if (create) setCurrentChat(null)
+        setCreatingChat(create)
+    }
+
     const chatSelected = (chat : ChatDTO) => {
         if (socket) {
             socket.emit(currentChat === chat ? SocketIOEvent.LEFT_CHAT : SocketIOEvent.JOIN_CHAT, chat.id, {limit: 20})
             setCurrentChat(currentChat === chat ? null : chat)
+            setCreatingChat(false)
         } else {
+            createToast(t('error.connection-error'), ToastType.ALERT)
             console.error("socket not connected");
         }
+    }
+
+    const handleOnFinishedCreatingChat = () => {
+        service.getChats().then((res)=>{
+            console.log(res);
+            setChats(res)
+        })
+        setCreatingChat(false)
     }
 
 
     return (
         <>
             <StyledContainer maxWidth={'600px'} borderRight={"1px solid #ebeef0"}>
+                <StyledContainer borderBottom={"1px solid #ebeef0"} height={"auto"}>
+                    <Button 
+                        text={creatingChat ? t('buttons.cancel') : t('chat.create')} 
+                        buttonType={creatingChat ? ButtonType.DELETE : ButtonType.DEFAULT} 
+                        size={"150px"} 
+                        onClick={()=>onCreateChat(!creatingChat)}
+                    />
+                </StyledContainer>
                 {chats.map(c=><ChatBox key={c.id} chat={c}  selected={currentChat===c} onClick={()=>chatSelected(c)}/>)}
             </StyledContainer>
             {
                 (currentChat !== null && socket !== null ) && 
                 <ChatPage chat={currentChat} socket={socket} />
+            }
+            {
+                (creatingChat && <CreateChatPage onFinished={handleOnFinishedCreatingChat}/>)
             }
         </>
     )
