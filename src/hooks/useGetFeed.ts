@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { LIMIT } from "../util/Constants";
 
 
-//TODO-FIX: this is not working correctly, should reset posts in query change ('' , following)
 export const useGetFeed = (following : boolean, after?: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
