@@ -233,6 +233,7 @@ const httpRequestService : HttpRequestService = {
       `/chat`,
       {
         participantIds: participantIds,
+        name: name
       }
     );
 
