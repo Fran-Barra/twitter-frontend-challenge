@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useHttpRequestService } from "../service/HttpRequestService";
-import { setLength, updateFeed } from "../redux/user";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Post } from "../service";
 
 interface UseGetCommentsProps {

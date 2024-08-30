@@ -31,7 +31,7 @@ const ProfilePage = () => {
   const {t} = useTranslation();
 
   //TODO: manage error
-  const {data: user, isLoading, error} = reactQueryService.useMe()
+  const {data: user} = reactQueryService.useMe()
 
 
   const getProfileData = async () => {

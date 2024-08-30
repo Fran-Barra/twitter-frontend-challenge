@@ -1,8 +1,7 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import Button from "../button/Button";
 import TweetInput from "../tweet-input/TweetInput";
 import {useHttpRequestService} from "../../service/HttpRequestService";
-import {setLength, updateFeed} from "../../redux/user";
 import ImageContainer from "../tweet/tweet-image/ImageContainer";
 import {BackArrowIcon} from "../icon/Icon";
 import ImageInput from "../common/ImageInput";
@@ -10,9 +9,6 @@ import {useTranslation} from "react-i18next";
 import {ButtonType} from "../button/StyledButton";
 import {StyledTweetBoxContainer} from "./TweetBoxContainer";
 import {StyledContainer} from "../common/Container";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/hooks";
-import { User } from "../../service";
 import { StyledButtonContainer } from "./ButtonContainer";
 import useReactQueryProxy from "../../service/reactQueryRequestProxy";
 import ToastContext from "../toast/ToastContext";
@@ -31,14 +27,12 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
     const [imagesPreview, setImagesPreview] = useState<string[]>([]);
     const {createToast} = useContext(ToastContext)
 
-    //const {length, query} : {length : number, query : string} = useAppSelector((state) => state.user);
     const httpService = useHttpRequestService();
-    const dispatch = useDispatch();
     const {t} = useTranslation();
     const service = useReactQueryProxy()
 
     //TODO: manage error and loading
-    const {data: user, isLoading, error} = service.useMe()
+    const {data: user} = service.useMe()
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContent(e.target.value);
@@ -54,13 +48,6 @@ const TweetBox = ({ parentId, mobile = false, close} : TweetBoxProps) => {
             setContent("");
             setImages([]);
             setImagesPreview([]);
-            
-            //TODO: for what I have seen creating a new post does not show in your feed, so there is no requirement of updating
-
-            //dispatch(setLength(length + 1));
-            //TODO: check why this: const posts = await httpService.getPosts(length + 1, "", query);
-            //const posts = await httpService.getPosts(query);
-            //dispatch(updateFeed(posts));
             close && close();
         } catch (e) {
             console.log(e);

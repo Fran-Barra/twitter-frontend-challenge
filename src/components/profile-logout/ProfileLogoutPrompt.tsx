@@ -3,7 +3,7 @@ import {
     StyledLogoutPrompt,
     StyledProfileLogoutPromptContainer
 } from "./StyledProfileLogoutPromptContainer";
-import React, {useEffect, useRef, useState} from "react";
+import React, { useRef, useState} from "react";
 import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
@@ -23,7 +23,7 @@ const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
 
 
   //TODO: manage error and is loading
-  const {data: user, isLoading, error} = service.useMe()
+  const {data: user } = service.useMe()
 
 
     const handleLogout = () => {

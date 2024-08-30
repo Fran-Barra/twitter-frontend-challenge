@@ -83,7 +83,6 @@ const ChatPage = ({chat, socket} : ChatPageProps) => {
     }, [chat])
 
     const getOlderMessages = () => {
-        console.log("getting old messages");
         //TODO: it seems that I am calling emit GET_MESSAGES from one place where i am not in a chat
         socket.emit(SocketIOEvent.GET_MESSAGES, {limit: 10, after: afterMessage})
     }
@@ -111,7 +110,7 @@ const ChatPage = ({chat, socket} : ChatPageProps) => {
             const sender = chatUsers.current.get(m.userId)                  
             return sender && 
                 <ChatMessage
-                    ref={i == 0 ? lastMessageRef : undefined} 
+                    ref={i === 0 ? lastMessageRef : undefined} 
                     key={m.id} message={m} 
                     sender={sender} 
                     localUser={m.userId === me?.id}

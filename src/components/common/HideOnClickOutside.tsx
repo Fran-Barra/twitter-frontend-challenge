@@ -1,4 +1,4 @@
-import { ReactNode, Ref, useEffect, useRef } from "react"
+import { ReactNode, useEffect } from "react"
 
 interface HideOnClickOutsideProps {
     modalRef: React.RefObject<HTMLElement>

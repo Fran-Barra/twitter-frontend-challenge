@@ -22,11 +22,11 @@ const ContentFeed = ({following} : ContentFeedProps) => {
     
   }, [following])
 
-  const { data: newPosts, isLoading: loading, error} = service.useGetPosts(following, LIMIT, afterId);
+  const { data: newPosts, isLoading: loading } = service.useGetPosts(following, LIMIT, afterId);
 
   useEffect(()=>{
     if (!newPosts) return
-    if (newPosts.length == 0) {
+    if (newPosts.length === 0) {
       setHasMore(false)
       return
     }

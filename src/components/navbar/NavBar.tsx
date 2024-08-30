@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import NavItem from "./navItem/NavItem";
 import Button from "../button/Button";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -18,25 +18,11 @@ const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [tweetModalOpen, setTweetModalOpen] = useState(false);
-  const [logoutOpen, setLogoutOpen] = useState(false);
   const service = reactQueryRequestProxy()
   const {t} = useTranslation();
 
   //TODO: handle loading and error
-  const {isLoading, data: user, error} = service.useMe()
-
-  //TODO: method not being use, take a look
-  const handleAvatarClick = () => {
-    if (window.innerWidth < 1265) {
-      handleLogout();
-    } else {
-      navigate(`/profile/${user?.id}`);
-    }
-  };
-
-  const handleLogout = () => {
-    setLogoutOpen(!logoutOpen);
-  };
+  const {data: user } = service.useMe()
 
   return (
       <StyledNavBarContainer>

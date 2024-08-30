@@ -2,7 +2,6 @@ import { useContext } from "react"
 import ToastContext, { ToastData } from "./ToastContext"
 import Toast from "./Toast"
 import { StyledToastListDisplay } from "./StyledToastListDisplay"
-import { TOASTS_DURATION } from "../../util/Constants"
 
 
 export const ToastListDisplay = () => {

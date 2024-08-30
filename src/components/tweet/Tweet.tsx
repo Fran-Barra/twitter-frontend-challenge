@@ -26,7 +26,7 @@ const Tweet = React.forwardRef<HTMLDivElement, TweetProps>(({post} : TweetProps,
   const navigate = useNavigate();
 
   //TODO: manage error and loading
-  const {data: user, isLoading, error} = service.useMe()
+  const {data: user} = service.useMe()
   const {data: actualPost, isLoading: postLoading} = service.useGetPostById(post.id)
 
   const createReactionMutation = service.useCreateReaction({})

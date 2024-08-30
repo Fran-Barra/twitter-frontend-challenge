@@ -85,7 +85,7 @@ const CreateChatPage = ({onFinished} : CreateChatPageProps) => {
 
     const onRemoveParticipant = (id : string) => {
         setParticipants(value => {
-            return value.filter(p => p.id != id)
+            return value.filter(p => p.id !== id)
         })
     }
 

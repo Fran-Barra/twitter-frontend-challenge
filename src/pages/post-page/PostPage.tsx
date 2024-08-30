@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyledContainer } from "../../components/common/Container";
 import Tweet from "../../components/tweet/Tweet";
 import Loader from "../../components/loader/Loader";

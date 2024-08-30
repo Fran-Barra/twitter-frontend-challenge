@@ -34,7 +34,7 @@ const Feed = ({ posts, loading, hasMore = true, onReachedEnd }: FeedProps) => {
           return self.findIndex((p) => p.id === post.id) === index;
         })
         .map((post: Post, i: number) => {
-          return posts.length == i+1 ?
+          return posts.length === i+1 ?
             <Tweet ref={lastTweet} key={post.id} post={post} /> :
             <Tweet key={post.id} post={post} />
         })}

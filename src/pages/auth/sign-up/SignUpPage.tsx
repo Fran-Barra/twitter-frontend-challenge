@@ -63,7 +63,7 @@ const SignUpPage = () => {
 
     if (!values.password) {
       errors.password = t('error.sign-up.required')
-    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-])[A-Za-z\d@$!%*?&\-]{8,}$/.test(values.password)) {
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&-])[A-Za-z\d@$!%*?&-]{8,}$/.test(values.password)) {
       errors.password = t('error.sign-up.password')
     }
     

@@ -24,7 +24,7 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
   const service = useReactQueryProxy();
 
   //TODO: manage error and loading
-  const {data: user, isLoading, error} = service.useMe()
+  const {data: user} = service.useMe()
 
   const handleClick = () => {
     setShowModal(true);

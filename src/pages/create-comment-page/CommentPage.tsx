@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BackArrowIcon } from "../../components/icon/Icon";
 import Button from "../../components/button/Button";
-import {Post, User} from "../../service";
+import {Post} from "../../service";
 import AuthorData from "../../components/tweet/user-post-data/AuthorData";
 import ImageContainer from "../../components/tweet/tweet-image/ImageContainer";
 import { useLocation } from "react-router-dom";
 import { useHttpRequestService } from "../../service/HttpRequestService";
 import TweetInput from "../../components/tweet-input/TweetInput";
 import ImageInput from "../../components/common/ImageInput";
-import { setLength, updateFeed } from "../../redux/user";
 import { useTranslation } from "react-i18next";
 import { ButtonType } from "../../components/button/StyledButton";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { StyledContainer } from "../../components/common/Container";
 import { StyledLine } from "../../components/common/Line";
 import { StyledP } from "../../components/common/text";
@@ -24,12 +22,10 @@ const CommentPage = () => {
   const postId = useLocation().pathname.split("/")[3];
   const service = useHttpRequestService();
   const reactQueryService = useReactQueryProxy();
-  const { length, query } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
   //TODO: manage error and loading
-  const {data: user, isLoading, error} = reactQueryService.useMe();
+  const {data: user} = reactQueryService.useMe();
 
 
   useEffect(() => {
@@ -54,10 +50,7 @@ const CommentPage = () => {
   const handleSubmit = async () => {
     setContent("");
     setImages([]);
-    //TODO: I don't thinks this is needed must check
-    //dispatch(setLength(length + 1));
-    //const posts = await service.getPosts(query);
-    //dispatch(updateFeed(posts));
+    //TODO: I don't thinks this is needed must check, (get posts again)
     exit();
   };
   const handleRemoveImage = (index: number) => {
