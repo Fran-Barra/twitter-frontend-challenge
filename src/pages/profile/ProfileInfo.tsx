@@ -25,8 +25,8 @@ const ProfileInfo = ({
   const service = useReactQueryProxy()
   const {createToast} = useContext(ToastContext)
   const mutateProfilePicture = service.usePostProfilePicture({
-    onSuccess: ()=>createToast(t('user.post-profile-picture'), ToastType.INFO),
-    onError: ()=>createToast(t('error.profile.new-picture'), ToastType.ALERT)
+    onSuccess: ()=>createToast(t('toast.profile.picture-updated'), ToastType.INFO),
+    onError: ()=>createToast(t('toast.profile.picture-update-fail'), ToastType.ALERT)
   })
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {    

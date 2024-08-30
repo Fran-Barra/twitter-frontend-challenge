@@ -81,6 +81,10 @@
     "follow": {
       "failed-follow": "Perdon, no fue posible empezar a seguir",
       "failed-unfollow": "Perdon, no fue posible dejar de seguir"
+    },
+    "profile": {
+      "picture-updated": "Imagen cambida exitosamente",
+      "picture-update-fail": "Fallo en cambiar la imagen"
     }
   },
   "chat": {

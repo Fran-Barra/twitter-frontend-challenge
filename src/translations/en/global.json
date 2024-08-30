@@ -80,6 +80,10 @@
     "follow": {
       "failed-follow": "Sorry, could not start following",
       "failed-unfollow": "Sorry, could not stop following"
+    },
+    "profile": {
+      "picture-updated": "Image updated successfully",
+      "picture-update-fail": "Failed to update image"
     }
   },
   "chat": {
