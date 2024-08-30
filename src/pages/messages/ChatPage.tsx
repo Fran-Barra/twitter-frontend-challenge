@@ -69,7 +69,7 @@ const ChatPage = ({chat, socket} : ChatPageProps) => {
     const {data: me} = httpService.useMe()
 
     useEffect(() => {
-        socket.on(SocketIOEvent.GET_MESSAGES, onGotOlderMessages)
+        socket.on(SocketIOEvent.GET_MESSAGES, onFirstGotOlderMessages)
         socket.on(SocketIOEvent.MESSAGE, onNewMessage)
 
         return () => {
@@ -87,17 +87,31 @@ const ChatPage = ({chat, socket} : ChatPageProps) => {
         socket.emit(SocketIOEvent.GET_MESSAGES, {limit: 10, after: afterMessage})
     }
 
+    const onFirstGotOlderMessages = (olderMessages : MessageDTO[]) => {
+        updateListWithOlderMessages(true, olderMessages)
+
+        socket.off(SocketIOEvent.GET_MESSAGES, onFirstGotOlderMessages)
+        socket.on(SocketIOEvent.GET_MESSAGES, onGotOlderMessages)
+    }
+
     const onGotOlderMessages = (olderMessages : MessageDTO[]) => {
-        console.log("got older messages with messages: " + messages.length);
+        updateListWithOlderMessages(false, olderMessages)   
+    }
+
+    const updateListWithOlderMessages = (setDown : boolean, olderMessages : MessageDTO[]) => {        
         if (olderMessages.length === 0) return
-        setGoDown(messages.length === 0);
+        setGoDown(setDown);
 
         const reversedOlderMessages = olderMessages.reverse()
-        console.log(reversedOlderMessages);
         
         if (reversedOlderMessages[0].id === afterMessage) return
-        setMessages(actual => {return [...reversedOlderMessages, ...actual]})
-        setAfterMessage(reversedOlderMessages[0].id)    
+        setMessages(actual => {
+            //the order of making the map is important
+            const map = new Map(reversedOlderMessages.map(m=>[m.id,m]))
+            actual.forEach(m=>map.set(m.id, m))
+            return Array.from(map.values())
+        })
+        setAfterMessage(reversedOlderMessages[0].id)   
     }
 
     const onNewMessage = (message: MessageDTO) => {
@@ -121,6 +135,7 @@ const ChatPage = ({chat, socket} : ChatPageProps) => {
     const handleSendMessage = (message : string) => {
         if (!me) return
         socket.emit(SocketIOEvent.MESSAGE, message)
+        setGoDown(true)
         setMessages(prev => {
             return [
                 ...prev,
@@ -143,7 +158,7 @@ const ChatPage = ({chat, socket} : ChatPageProps) => {
     }
 
 
-    useEffect(() => {
+    useEffect(() => {        
         if (!messagesContainer || !messagesContainer.current || !goDown) return
         messagesContainer.current.scrollTop = messagesContainer.current?.scrollHeight;        
     }, [messages]);
@@ -155,7 +170,6 @@ const ChatPage = ({chat, socket} : ChatPageProps) => {
 
         observer.current = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                console.log('Oldest message is visible');
                 getOlderMessages();
             }
         });

@@ -104,7 +104,7 @@ const MessagesPage = () => {
 
     const chatSelected = (chat : ChatDTO) => {
         if (socket) {
-            socket.emit(currentChat === chat ? SocketIOEvent.LEFT_CHAT : SocketIOEvent.JOIN_CHAT, chat.id, {limit: 20})
+            socket.emit(currentChat === chat ? SocketIOEvent.LEFT_CHAT : SocketIOEvent.JOIN_CHAT, chat.id, {limit: 30})
             setCurrentChat(currentChat === chat ? null : chat)
             setCreatingChat(false)
         } else {
