@@ -17,6 +17,7 @@ import { StyledModalInputContainer } from "../../components/labeled-input/ModalI
 import { createPortal } from "react-dom"
 import ToastContext from "../../components/toast/ToastContext"
 import { ToastType } from "../../components/toast/Toast"
+import useReactQueryProxy from "../../service/reactQueryRequestProxy"
 
 
 
@@ -45,6 +46,7 @@ const NewParticipant = ({author, onClick} : NewParticipantProps) => {
 
 const CreateChatPage = ({onFinished} : CreateChatPageProps) => {
     const service = useHttpRequestService()
+    const rqService = useReactQueryProxy()
     const [query, setQuery] = useState<string>("");
     const [results, setResults] = useState<Author[]>([]);
     const [participants, setParticipants] = useState<Author[]>([])
@@ -55,8 +57,10 @@ const CreateChatPage = ({onFinished} : CreateChatPageProps) => {
     const [popUpSetName, setPopUpSetName] = useState<boolean>(false)
     let debounceTimer: NodeJS.Timeout;
 
-    const createChat = () => {
-        service.createChat(participants.map(p=>p.id), name)
+    const {data:me} = rqService.useMe()
+
+    const createChat = (oneOnOneName?: string) => {        
+        service.createChat(participants.map(p=>p.id), (name && name !== '') ? name : oneOnOneName)
             .then((r)=>{
                 createToast(t('chat.created-successfully'), ToastType.INFO)
                 if (onFinished) onFinished()
@@ -96,9 +100,18 @@ const CreateChatPage = ({onFinished} : CreateChatPageProps) => {
         })
     }
 
-    const handleCreate = () => {
+    const handleCreate = () => {        
         if (participants.length === 0) return 
-        if (participants.length === 1) createChat()
+        if (participants.length === 1) {            
+            if (!me) {                
+                createToast(t('error.connection-error'), ToastType.ALERT)
+                return
+            }
+            const chatName = `${me.username}-${participants[0].username}`
+            setName(chatName)
+            createChat(chatName)
+            
+        }
         else setPopUpSetName(true)
     }
 
