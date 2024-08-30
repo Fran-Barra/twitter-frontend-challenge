@@ -13,8 +13,6 @@ export const ToastListDisplay = () => {
             removeToast(toastData.id)            
         }
 
-        //TODO: this is not be working correctly, this is run each time it renders
-        //const cancelToken = setTimeout(closeToast, TOASTS_DURATION)
         
 
         return <Toast 
@@ -24,7 +22,6 @@ export const ToastListDisplay = () => {
             type={toastData.type}
             onClose={()=>{
                 closeToast()
-                //clearTimeout(cancelToken)
             }}
         />
     }
