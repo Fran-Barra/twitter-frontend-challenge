@@ -145,6 +145,7 @@ const ProfilePage = () => {
                         name={profile!.name!}
                         username={profile!.username}
                         profilePicture={profile!.profilePicture}
+                        isMe={profile.id === user.id}
                     />
                     <Button
                         buttonType={handleButtonType().component}

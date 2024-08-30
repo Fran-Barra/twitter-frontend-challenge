@@ -6,6 +6,8 @@ import { ReactionType } from "../util/ReactionType";
 
 interface HttpRequestService {
   me: () => Promise<User | undefined>
+  postProfilePicture: (file: File) => Promise<undefined>
+
   followUser: (userId: string) => Promise<any | undefined>
   unfollowUser: (userId: string) => Promise<any | undefined>
   getProfile: (userId : string) => Promise<User>
@@ -209,6 +211,15 @@ const httpRequestService : HttpRequestService = {
     if (res.status === 200) {
       return res.data;
     }
+  },
+
+  postProfilePicture: async (file: File) => {
+    const res = await server.post(`user/profile-picture`)    
+    if (res.status === 200) {
+      const { upload } = S3Service;
+      await upload(file, res.data['post-url'])
+    }
+    return res.data
   },
 
   deleteProfile: async () => {

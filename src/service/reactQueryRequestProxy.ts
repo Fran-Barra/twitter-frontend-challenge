@@ -48,6 +48,15 @@ const useReactQueryProxy = () => {
             onError: options.onError
         }),
 
+        usePostProfilePicture: (options: Options<File>) => useMutation({
+            mutationFn: httpService.postProfilePicture,
+            onSuccess: (data: any, variables: File, context: unknown) => {
+                queryClient.invalidateQueries({queryKey: ['me']})
+                if (options.onSuccess) options.onSuccess(data, variables, context)
+            },
+            onError: options.onError
+        }),
+
 
         //TODO: check that is working correctly. (create reaction and delete reaction call the get, but I think the stash is not working)
         useGetPostById: (postId: string) => useQuery({
