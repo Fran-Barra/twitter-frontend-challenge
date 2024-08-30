@@ -12,6 +12,8 @@ import ToastContext from "../../components/toast/ToastContext"
 import { ToastType } from "../../components/toast/Toast"
 import Button from "../../components/button/Button"
 import { ButtonType } from "../../components/button/StyledButton"
+import useReactQueryProxy from "../../service/reactQueryRequestProxy"
+import Loader from "../../components/loader/Loader"
 
 interface ChatBoxProps {
     chat : ChatDTO;
@@ -72,17 +74,13 @@ const ChatBox = ({chat, selected, onClick}: ChatBoxProps) => {
 const MessagesPage = () => {
     const [currentChat, setCurrentChat] = useState<ChatDTO | null>(null)
     const [creatingChat, setCreatingChat] = useState(false)
-    const [chats, setChats] = useState<ChatDTO[]>([])
     const [socket, setSocket] = useState<Socket | null>(null)
-    const service = useHttpRequestService()
+    const service = useReactQueryProxy()
     const { createToast } = useContext(ToastContext)
 
-    useEffect(()=>{
-        service.getChats().then((res)=>{
-            console.log(res);
-            setChats(res)
-        })
+    const {data: chats, isLoading} = service.useGetChats()
 
+    useEffect(()=>{
         const newSocket = io(process.env.REACT_APP_API_URL || '', {
             auth: { token: localStorage.getItem("token")}
         })        
@@ -114,14 +112,10 @@ const MessagesPage = () => {
     }
 
     const handleOnFinishedCreatingChat = () => {
-        service.getChats().then((res)=>{
-            console.log(res);
-            setChats(res)
-        })
         setCreatingChat(false)
     }
 
-
+    if (!chats || isLoading) return <Loader />
     return (
         <>
             <StyledContainer maxWidth={'600px'} borderRight={"1px solid #ebeef0"}>
@@ -137,7 +131,7 @@ const MessagesPage = () => {
             </StyledContainer>
             {
                 (currentChat !== null && socket !== null ) && 
-                <ChatPage chat={currentChat} socket={socket} />
+                <ChatPage chat={currentChat} socket={socket} onCloseChat={()=>setCurrentChat(null)}/>
             }
             {
                 (creatingChat && <CreateChatPage onFinished={handleOnFinishedCreatingChat}/>)

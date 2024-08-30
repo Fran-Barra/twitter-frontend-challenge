@@ -57,19 +57,25 @@ const CreateChatPage = ({onFinished} : CreateChatPageProps) => {
     const [popUpSetName, setPopUpSetName] = useState<boolean>(false)
     let debounceTimer: NodeJS.Timeout;
 
+    const createChatMutation = rqService.useCreateNewChat({
+        onSuccess: () => {
+            createToast(t('chat.created-successfully'), ToastType.INFO)
+            if (onFinished) onFinished()
+        },
+        onError: (e)=>{
+            if (e?.response?.status === 403) createToast(t('chat.follow-followback'), ToastType.ALERT)
+            else createToast(t('error.post-chat'), ToastType.ALERT)
+            if (onFinished) onFinished()
+        }
+    })
+
     const {data:me} = rqService.useMe()
 
     const createChat = (oneOnOneName?: string) => {        
-        service.createChat(participants.map(p=>p.id), (name && name !== '') ? name : oneOnOneName)
-            .then((r)=>{
-                createToast(t('chat.created-successfully'), ToastType.INFO)
-                if (onFinished) onFinished()
-            })
-            .catch((e)=>{
-                if (e?.response?.status === 403) createToast(t('chat.follow-followback'), ToastType.ALERT)
-                else createToast(t('error.post-chat'), ToastType.ALERT)
-                if (onFinished) onFinished()
-            })
+        createChatMutation.mutate({
+            participantIds: participants.map(p=>p.id),
+            name: (name && name !== '') ? name : oneOnOneName
+        })
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

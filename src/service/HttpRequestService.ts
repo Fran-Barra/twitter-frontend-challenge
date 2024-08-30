@@ -20,6 +20,8 @@ interface HttpRequestService {
 
   createChat: (participantIds: string[], name?: string) => Promise<void>
   getChats: () => Promise<ChatDTO[]>
+  deleteChat: (chatId : string) => Promise<void> 
+  leaveOrRemoveParticipant: (chatId : string, participantId: string) => Promise<void>
 
   [key: string]: (...args: any[]) => Promise<any | undefined>;
 }
@@ -266,6 +268,14 @@ const httpRequestService : HttpRequestService = {
     if (res.status === 200) {
       return res.data;
     }
+  },
+
+  deleteChat: (chatId : string) => {
+    return server.delete(`chat/${chatId}`)
+  },
+
+  leaveOrRemoveParticipant: (chatId: string, participantId: string) => {
+    return server.delete(`chat/participants/${chatId}/participant/${participantId}`)
   },
 
   deletePost: async (id: string) => {

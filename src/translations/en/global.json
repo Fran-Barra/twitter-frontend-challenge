@@ -94,6 +94,8 @@
     "create": "create chat",
     "create-short": "create",
     "follow-followback": "users must follow each other",
-    "created-successfully" : "created chat successfully"
+    "created-successfully" : "created chat successfully",
+    "leave" : "leave",
+    "choose-name": "Choose a name"
   }
 }

@@ -1,7 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useMutationState, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useHttpRequestService } from "./HttpRequestService"
 import { staleTimeForPost } from "../util/Constants";
-import { ReactionRequest } from "./reactQueryInterfaces";
+import { CreateChat, LeaveOrRemoveParticipant, ReactionRequest } from "./reactQueryInterfaces";
 
 
 //TODO: the data should not be passed here, but in the mutation when calling mutation, Should use the Options interface
@@ -88,8 +88,44 @@ const useReactQueryProxy = () => {
             queryKey: ['feed', following, limit, after],
             queryFn: () => httpService.getPosts(following, limit, after),
             staleTime: staleTimeForPost
-        })
+        }),
+
+
+        useGetChats: () => useQuery({
+            queryKey: ['chats'],
+            queryFn: ()=>httpService.getChats(),
+            staleTime: Infinity
+        }),
         
+        useCreateNewChat: (options: Options<CreateChat>) => useMutation({
+            mutationFn: (data: CreateChat) => httpService.createChat(data.participantIds, data.name),
+            onSuccess: (data: any, variables: CreateChat, context: unknown) => {
+                queryClient.invalidateQueries({queryKey: ['chats']})
+                options.onSuccess &&  options.onSuccess(data, variables, context)
+            },
+            onError: options.onError
+        }),
+
+        useDeleteChat: (options: Options<string>) => useMutation({
+            mutationFn: (chatId: string) => httpService.deleteChat(chatId),
+            onSuccess: (data: any, variables: string, context: unknown) => {
+                queryClient.invalidateQueries({queryKey: ['chats']})
+                options.onSuccess &&  options.onSuccess(data, variables, context)
+            },
+            onError: options.onError
+        }),
+
+        //TODO: if possible to get me, only invalidate if user is me
+        useLeaveOrRemoveParticipant: (options: Options<LeaveOrRemoveParticipant>) => useMutation({
+            mutationFn: (data: LeaveOrRemoveParticipant) => httpService.leaveOrRemoveParticipant(data.chatId, data.participantId),
+            onSuccess: (data: any, variables: LeaveOrRemoveParticipant, context: unknown) => {
+                queryClient.invalidateQueries({queryKey: ['chats']})
+                options.onSuccess &&  options.onSuccess(data, variables, context)
+            },
+            onError: options.onError
+        })
+
+        //TODO: add participant
     }
 }
 
